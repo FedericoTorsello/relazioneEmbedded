@@ -1,0 +1,126 @@
+\documentclass[a4paper,twoside,11pt]{report}
+\usepackage[italian]{babel}
+\usepackage[utf8x]{inputenc}
+%\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage[scaled]{helvet}
+%\renewcommand\familydefault{\sfdefault}
+
+%\renewcommand{\sfdefault}{cmr}
+%helvetica
+%\renewcommand{\sfdefault}{phv}
+%courier
+%\renewcommand{\sfdefault}{pcr}
+
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{sidecap}
+
+\usepackage{quoting}
+\quotingsetup{font=small}
+
+
+\usepackage{eurosym}
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{comment}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage[dvipsnames]{xcolor}
+%%https://en.wikibooks.org/wiki/LaTeX/Colors
+\usepackage[colorlinks]{hyperref}
+%\hypersetup{hidelinks}
+
+\hypersetup{%
+	,urlcolor=Cyan
+	,citecolor=black
+	,linkcolor=black
+}
+
+\lstdefinelanguage{XML}
+{
+	basicstyle=\scriptsize,
+	sensitive=true,
+	showstringspaces=false,
+	numbers=left,
+	numberstyle=\tiny,
+	tabsize=4,
+	numbersep=3pt,
+	extendedchars=true,
+	xleftmargin=2em,
+	lineskip=1pt,
+	breaklines,
+	captionpos=t,
+	backgroundcolor=\color{lightgray},
+	morekeywords={android},
+	alsoletter={:,,/,?},
+	morestring=[b]{"},
+	morecomment=[s]{&lt;!--}{--&gt;},
+	keywordstyle=\color{forestGreen},
+	identifierstyle=\color{blue}\ttfamily,
+	stringstyle=\color{orangeRed}\ttfamily,
+	commentstyle=\color{forestGreen}\ttfamily
+}
+
+\lstset
+{ 	
+	language=Bash,
+	basicstyle=\scriptsize,
+	sensitive=true,
+	showstringspaces=false,
+	numbers=none,
+	numberstyle=\tiny,
+	tabsize=4,
+	numbersep=3pt,
+	extendedchars=true,
+	xleftmargin=2em,
+	lineskip=1pt,
+	breaklines,
+	captionpos=t,
+	backgroundcolor=\color{lightgray},
+	morestring=[b]{"},
+	morecomment=[l]{\#},
+	keywordstyle=\color{forestGreen},
+	identifierstyle=\color{codegreen}\ttfamily,
+	stringstyle=\color{codepurple}\ttfamily,
+	commentstyle=\color{codegray}\ttfamily
+}
+
+\lstset
+{ language=Java,
+	basicstyle=\scriptsize,
+	sensitive=true,
+	showstringspaces=false,
+	numberstyle=\tiny,
+	tabsize=4,
+	numbersep=3pt,
+	extendedchars=true,
+	xleftmargin=2em,
+	lineskip=1pt,
+	breaklines,
+	captionpos=t,
+	backgroundcolor=\color{lightgray},
+	morestring=[b]{"}, 
+	morecomment=[s]{/*}{*/},
+	morecomment=[l]{//},
+	keywordstyle=\color{orangeRed},
+	identifierstyle=\color{blue}\ttfamily,
+	stringstyle=\color{codepurple}\ttfamily,
+	commentstyle=\color{codegray}\ttfamily
+}
+
+%opening
+\title{Programmazione di Sistemi Embedded\\ {\Large Jimmy Challenge Arduino Game}}
+\author{
+    Edoardo Rosa - Matr. 707922\\
+    Federico Torsello - Matr. 702619}
+
+                             % \ip that is commented out.
+
+\begin{document}             % End of preamble and beginning of text.
+\maketitle                   % Produces the title.
+\include{cap0} %Sommario
+\include{cap1}
+\end{document}               % End of document.
