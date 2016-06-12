@@ -16,7 +16,11 @@
 \BOOKMARK [2][-]{subsection.3.1.2}{Superare un livello}{section.3.1}% 16
 \BOOKMARK [2][-]{subsection.3.1.3}{Stato di scasso}{section.3.1}% 17
 \BOOKMARK [0][-]{chapter.4}{Task}{}% 18
-\BOOKMARK [0][-]{appendix.Alph1}{Elenco dei componenti utilizzati}{}% 19
-\BOOKMARK [1][-]{section.Alph1.1}{Componenti hardware}{appendix.Alph1}% 20
-\BOOKMARK [1][-]{section.Alph1.2}{Componenti software}{appendix.Alph1}% 21
-\BOOKMARK [0][-]{appendix.Alph2}{Schema di collegamento}{}% 22
+\BOOKMARK [1][-]{subsection.4.0.1}{Generalizzazione del funzionamento di un task}{chapter.4}% 19
+\BOOKMARK [1][-]{section.4.1}{Le espressioni Lambda in Wiring/C++11}{chapter.4}% 20
+\BOOKMARK [0][-]{appendix.Alph1}{Elenco dei componenti utilizzati}{}% 21
+\BOOKMARK [1][-]{section.Alph1.1}{Componenti hardware}{appendix.Alph1}% 22
+\BOOKMARK [1][-]{section.Alph1.2}{Componenti software}{appendix.Alph1}% 23
+\BOOKMARK [0][-]{appendix.Alph2}{Schema di collegamento}{}% 24
+\BOOKMARK [1][-]{section.Alph2.1}{Sketch Arduino - lato client}{appendix.Alph2}% 25
+\BOOKMARK [1][-]{section.Alph2.2}{Sketch Odroid - lato server}{appendix.Alph2}% 26

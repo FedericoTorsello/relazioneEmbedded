@@ -24,11 +24,10 @@ Dal punto di vista fisico, si ha un Arduino UNO:
  Ogni componente della breadboard ha un proprio impiego distinguendoli in \textbf{sensori} ed \textbf{attuatori} secondo la visione di \textit{sistema reattivo}.
 
 	\begin{quote}
-		\textbf{Reactive system}: è l’ambiente esterno che determina gli eventi che
-		condizionano l’esecuzione del sistema
+		\textbf{Reactive system}: è l’ambiente esterno che determina gli eventi che	condizionano l’esecuzione del sistema
 	\end{quote}
 	
-La connessione seriale via USB serve per inviare i dati campionati dall'Arduino verso il PC. A loro volta questi dati possono servire per creare una GUI locale (per esempio su terminale) o remota, su browser.
+La connessione seriale via USB serve per inviare i dati campionati dall'Arduino verso il PC. A loro volta questi dati possono servire per creare una interfaccia utente locale (per esempio su terminale) o remota, su browser.
 
 \subsection{Modellazione della parte logica - lato client}
 Per realizzare il comportamento dinamico del progettare, nella parte software si è replicato il funzionamento di una macchina a stati finiti (\textit{FSM}) che esegue dei task.
@@ -58,7 +57,7 @@ Per realizzare il comportamento dinamico del progettare, nella parte software si
 	
 Si è fatto uso della modellazione ad oggetti, modellando ogni task come una classe separata che estende da una classe base task. In ogni task viene fatto l'\textbf{\textit{inject} del comportamento} da avere ad ogni tick.
 
-Il multi-tasking realizzato è cooperativo, tipo round-robin in quanto c'è parallelismo e le funzioni tick() sono chiamate sequenzialmente all'interno del loop dello Scheduler.
+Il multi-tasking realizzato è cooperativo, tipo \textbf{round-robin} in quanto c'è parallelismo e le funzioni \textit{tick()} sono chiamate sequenzialmente all'interno del loop dello Scheduler.
 
 \begin{itemize}	
 	\item si è fatto uso della programmazione Object-Oriented per rendere la struttura del codice ingegneristica, lineare e scalabile;
@@ -88,7 +87,6 @@ Il sistema che si suddivide in più aree:
 	\item sito internet come GUI remota
 	\item gestione del server remoto
 \end{enumerate}
-
 
 \section{Analysis}
 Potenzialità software di Arduino UNO sfruttate:
