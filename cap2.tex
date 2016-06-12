@@ -47,16 +47,31 @@ Per realizzare il comportamento dinamico del progettare, nella parte software si
 			\item ogni modulo è rappresentato da un task (compito da eseguire)
 			\item un task può essere decomposto in sotto-task in modo ricorsivo o un task complesso può essere definito come composizione di sotto-task più semplici
 		\end{itemize}
+		Vantaggi:
+		\begin{itemize}
+			\item separation of concerns
+			\item l'utilizzo di singoli moduli per migliore la comprensibilità del comportamento
+			\item debugging semplificato
+			\item supporto alla modificabilità, all'estensione ed al riuso del codice
+		\end{itemize}
 	\end{quote}
 	
 Si è fatto uso della modellazione ad oggetti, modellando ogni task come una classe separata che estende da una classe base task. In ogni task viene fatto l'\textbf{\textit{inject} del comportamento} da avere ad ogni tick.
 
-Il multi-tasking realizzato è cooperativo, tipo round-robin in quanto c'è parallelismo e le funzioni tick() sono chiamate sequenzialmente all'interno del loop dello sheduler.
+Il multi-tasking realizzato è cooperativo, tipo round-robin in quanto c'è parallelismo e le funzioni tick() sono chiamate sequenzialmente all'interno del loop dello Scheduler.
 
 \begin{itemize}	
 	\item si è fatto uso della programmazione Object-Oriented per rendere la struttura del codice ingegneristica, lineare e scalabile;
 	\item si sono utilizzate le lambda expression per fare l'\textit{inject} di codice da eseguire nei vari task.
 \end{itemize}
+
+Lo Scheduler utilizzato permette la cooperazione tra i task; per farlo tiene traccia della lista dei task che sono in esecuzione.
+
+Lo Scheduler è \textbf{cooperativo} in quanto una volta selezionato un task, questo viene eseguito fino al suo completamento (\textit{run-to-completion}). Ad ogni tick della macchina vengono eseguite atomicamente le azioni associate al nuovo stato.
+
+Lo scheduling è a priorità statica, in quanto ad ogni task viene assegnata una priorità che non cambia durante l'esecuzione definita implicitamente dall'ordine di inserimento dei task nell'array.
+
+La comunicazione tra i task avviene attraverso variabili condivise. Queste variabili appartengono alla classe Context.
 
 Per quanto riguarda la connessione USB, per scelta progettuale tutti i dati inviati dall'Arduino al PC sono tutti formattati in \textbf{JSON}.
 
@@ -74,18 +89,21 @@ Il sistema che si suddivide in più aree:
 	\item gestione del server remoto
 \end{enumerate}
 
-Le tecno
 
-– processo finalizzato alla creazione degli artefatti tecnologici che
-rappresentano il sistema
-– rappresentano come il sistema fa quello che deve fare
 \section{Analysis}
-
-
 Potenzialità software di Arduino UNO sfruttate:
+\begin{itemize}
+	\item programmazione Object-Oriented con \href{https://it.wikipedia.org/wiki/Wiring}{Wiring \footnote{Wiring - linguaggio di programmazione semplice e intuitivo derivato dal C e dal C++}}.
+	\begin{itemize}
+		\item modularizzazione in classi,
+		\item utilizzo di oggetti e metodi,
+		\item information hiding, 
+		\item ereditarietà, 
+		\item polimorfismo.
+	\end{itemize}
 
-
-
+	\item utilizzo di \textit{lambda expressions}
+\end{itemize}
 Potenzialità hardware di Arduino UNO sfruttate:
 \begin{itemize}
 	\item sono stati utilizzati tutti i 12 pin di I/O digitale;
