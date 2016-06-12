@@ -1,8 +1,20 @@
 \BOOKMARK [0][-]{chapter.1}{Introduzione}{}% 1
-\BOOKMARK [1][-]{section.1.1}{Giocare}{chapter.1}% 2
-\BOOKMARK [2][-]{subsection.1.1.1}{Significato dei suoni e dei colori}{section.1.1}% 3
-\BOOKMARK [2][-]{subsection.1.1.2}{Superare un livello}{section.1.1}% 4
-\BOOKMARK [2][-]{subsection.1.1.3}{Stato di scasso}{section.1.1}% 5
-\BOOKMARK [0][-]{appendix.Alph1}{Elenco dei componenti utilizzati}{}% 6
-\BOOKMARK [1][-]{section.Alph1.1}{Componenti hardware}{appendix.Alph1}% 7
-\BOOKMARK [1][-]{section.Alph1.2}{Componenti software}{appendix.Alph1}% 8
+\BOOKMARK [0][-]{chapter.2}{Progettazione di un sistema Embedded}{}% 2
+\BOOKMARK [1][-]{section.2.1}{Analisi dei requisiti}{chapter.2}% 3
+\BOOKMARK [2][-]{subsection.2.1.1}{Requisiti funzionali}{section.2.1}% 4
+\BOOKMARK [2][-]{subsection.2.1.2}{Requisiti non funzionali}{section.2.1}% 5
+\BOOKMARK [1][-]{section.2.2}{Modeling}{chapter.2}% 6
+\BOOKMARK [2][-]{subsection.2.2.1}{Modellazione della parte fisica - lato client}{section.2.2}% 7
+\BOOKMARK [2][-]{subsection.2.2.2}{Modellazione della parte logica - lato client}{section.2.2}% 8
+\BOOKMARK [2][-]{subsection.2.2.3}{Modellazione della parte fisica - lato server}{section.2.2}% 9
+\BOOKMARK [2][-]{subsection.2.2.4}{Modellazione della parte logica - lato server}{section.2.2}% 10
+\BOOKMARK [1][-]{section.2.3}{Design}{chapter.2}% 11
+\BOOKMARK [1][-]{section.2.4}{Analysis}{chapter.2}% 12
+\BOOKMARK [0][-]{chapter.3}{Giocare a Jimmy Challenge}{}% 13
+\BOOKMARK [1][-]{section.3.1}{Giocare con la mano e con i sensi}{chapter.3}% 14
+\BOOKMARK [2][-]{subsection.3.1.1}{Significato dei suoni e dei colori}{section.3.1}% 15
+\BOOKMARK [2][-]{subsection.3.1.2}{Superare un livello}{section.3.1}% 16
+\BOOKMARK [2][-]{subsection.3.1.3}{Stato di scasso}{section.3.1}% 17
+\BOOKMARK [0][-]{appendix.Alph1}{Elenco dei componenti utilizzati}{}% 18
+\BOOKMARK [1][-]{section.Alph1.1}{Componenti hardware}{appendix.Alph1}% 19
+\BOOKMARK [1][-]{section.Alph1.2}{Componenti software}{appendix.Alph1}% 20

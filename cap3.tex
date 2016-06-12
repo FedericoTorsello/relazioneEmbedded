@@ -1,0 +1,85 @@
+\chapter{Giocare a Jimmy Challenge}
+\section{Giocare con la mano e con i sensi}
+L'obiettivo del giocatore è trovare e quindi scassinare il lucchetto nel minor tempo possibile. Questo gioco è giocabile \textbf{online} (uno contro uno) che \textbf{offline}.
+
+La posizione del lucchetto viene assegnata in modo random ad ogni nuovo livello e rimane fissa fino al suo superamento.
+
+Per trovare la posizione attuale del lucchetto al giocatore basta muovere la mano orizzontalmente in direzione del sensore ad ultrasuoni. (La rilevazione del lucchetto è spiegata più avanti).
+
+Durante le varie fasi di gioco l'utente ha la possibilità di rendersi conto dell'evoluzione del gioco ascoltando i suoni emessi dal buzzer o guardando i colori dei LED.
+
+\subsection{Significato dei suoni e dei colori}
+\begin{itemize}
+	\item All'avvio del gioco
+	\begin{itemize}
+		\item i LED a 12 pin giallo e rosso fanno un carosello;
+		\item il LED verde e il buzzer si comportano come quando il lucchetto non è stato trovato.
+	\end{itemize}
+\end{itemize}
+
+
+\begin{itemize}
+	\item Quando \textbf{non} si è trovato il lucchetto:
+	\begin{itemize}
+		\item il LED verde emette una luce pulsante;
+		\item il LED RGB emette una luce continua di color blu chiaro;
+		\item il buzzer suona due note in modo frenetico.
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Quando si è nell'area del lucchetto:
+	\begin{itemize}
+		\item il LED verde emette una luce fissa;
+		\item il LED RGB continuerà ad emettere una luce continua blu chiaro, ma solo fino a quando non entrerà nello stato di scasso;
+		\item il buzzer suona due note meno freneticamente.
+	\end{itemize}
+\end{itemize}
+
+\subsection{Superare un livello}
+Per superare il livello il ladro deve forzare il lucchetto.
+
+Dal punto di vista del giocatore il lucchetto è un'area nello spazio posta davanti al sensore (in linea orizzontale).
+
+Per forzare il lucchetto è sufficiente utilizzare una mano posta davanti al sensore ad ultrasuoni per un tempo delimitato, avviando lo stato di scasso. Se il tempo di scasso non viene rispettato o la mano viene rimossa troppo presto, il livello riparte senza salvare i progressi.
+
+\begin{itemize}
+	\item \textbf{Non} si supera il livello:
+	\begin{itemize}
+			\item Se la mano viene spostata dall'area del lucchetto troppo presto, per esempio non si è ancora nello stato di scasso
+			\item Se si rimane troppo tempo nella fase di scasso (il lucchetto è stato "rotto").
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Si può superare il livello:
+	\begin{itemize}
+			\item Se la mano resta fissa nella posizione in cui si trova il lucchetto, rispettando il tempo nello \textbf{stato di scasso} e poi la si agita sempre nell'area del lucchtto ("aprendolo").
+	\end{itemize}
+\end{itemize}
+
+\subsection{Stato di scasso}
+Se si rispetta il tempo nello stato di scasso e quindi si apre il lucchetto, si supera il livello.
+
+Per indicare lo stato di scasso si è utilizzato il LED RGB. 
+\begin{itemize}
+	\item Ogni colore ha un significato:
+	\begin{itemize}
+		\item blu scuro: si sta scassinando il lucchetto
+		\item verde: il lucchetto è scassinato.
+			\subitem NB: per passare al livello successivo si deve togliere la mano e riposizionarla nell'area del lucchetto [come se si infilasse la "\textit{chiave}"].
+		\item arancio: attenzione, se non si toglie la mano ora si rischia di rompere il lucchetto
+		\item giallo: pericolo di rottura ancora più elevato
+		\item rosso: il lucchetto è stato rotto, quindi il livello deve essere ricominciato di nuovo.
+	\end{itemize}
+\end{itemize}
+
+Task:
+\begin{itemize}
+	\item SonarTask
+	\item ButtonTask
+	\item BuzzerTask
+	\item LedTask
+	\item LedPwmTask
+	\item LedRgbTask
+\end{itemize}

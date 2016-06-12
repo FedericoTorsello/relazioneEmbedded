@@ -1,0 +1,94 @@
+\chapter{Progettazione di un sistema Embedded}
+\section{Analisi dei requisiti}
+\subsection{Requisiti funzionali}
+Il sistema realizzato deve permettere ad uno o due giocatori di competere per sbloccare dei lucchetti. Ad ogni lucchetto sbloccato si supera il livello fino a quando i livelli non terminano e il gioco si dice finito. Durante il gioco sono presenti delle penalità e dei bonus.
+
+\subsection{Requisiti non funzionali}
+Le performance utili per la buona riuscita del progetto a cui non si può rinunciare riguardano la rilevazione della distanza e l'invio dei feedback locali/remoti.
+Il tempo gioca un ruolo importante in questo progetto, quindi si devono evitare inutili ritardi nella rilevazione ed invio delle informazioni.
+
+\section{Modeling}
+Il sistema si suddivide in più parti:
+\begin{itemize}
+	\item parte fisica lato client/server
+	\item parte software lato client/server
+	\item networking lato client/server
+\end{itemize}
+
+\subsection{Modellazione della parte fisica - lato client}
+Dal punto di vista fisico, si ha un Arduino UNO:
+ \begin{itemize}
+ 	\item connesso ad una breadboard e a dei componenti hardware attraverso i sui pin digitali
+ 	\item connesso ad un PC mediante la porta USB (da cui riceve l'alimentazione a 5v). 
+ \end{itemize}
+ Ogni componente della breadboard ha un proprio impiego distinguendoli in \textbf{sensori} ed \textbf{attuatori} secondo la visione di \textit{sistema reattivo}.
+
+	\begin{quote}
+		\textbf{Reactive system}: è l’ambiente esterno che determina gli eventi che
+		condizionano l’esecuzione del sistema
+	\end{quote}
+	
+La connessione seriale via USB serve per inviare i dati campionati dall'Arduino verso il PC. A loro volta questi dati possono servire per creare una GUI locale (per esempio su terminale) o remota, su browser.
+
+\subsection{Modellazione della parte logica - lato client}
+Per realizzare il comportamento dinamico del progettare, nella parte software si è replicato il funzionamento di una macchina a stati finiti (\textit{FSM}) che esegue dei task.
+
+	\begin{quote}
+		\textbf{Macchine a stati finiti} (o \textbf{\textit{automi a stati finiti}}): sono il modello nel discreto più utilizzato per modellare sistemi embedded.
+		
+		Ogni FSM opera in una sequenza di passi (discreti) e la sua dinamica è caratterizzata da sequenze di eventi (discreti).
+		
+		Un evento discreto avviene ad un determinato istante e non ha durata.
+	\end{quote}
+	
+	\begin{quote}
+		\textbf{Decomposizione in task}: principio di progettazione importante, rende modulare il sistema in quanto:
+		\begin{itemize}
+			\item ogni modulo è rappresentato da un task (compito da eseguire)
+			\item un task può essere decomposto in sotto-task in modo ricorsivo o un task complesso può essere definito come composizione di sotto-task più semplici
+		\end{itemize}
+	\end{quote}
+	
+Si è fatto uso della modellazione ad oggetti, modellando ogni task come una classe separata che estende da una classe base task. In ogni task viene fatto l'\textbf{\textit{inject} del comportamento} da avere ad ogni tick.
+
+Il multi-tasking realizzato è cooperativo, tipo round-robin in quanto c'è parallelismo e le funzioni tick() sono chiamate sequenzialmente all'interno del loop dello sheduler.
+
+\begin{itemize}	
+	\item si è fatto uso della programmazione Object-Oriented per rendere la struttura del codice ingegneristica, lineare e scalabile;
+	\item si sono utilizzate le lambda expression per fare l'\textit{inject} di codice da eseguire nei vari task.
+\end{itemize}
+
+Per quanto riguarda la connessione USB, per scelta progettuale tutti i dati inviati dall'Arduino al PC sono tutti formattati in \textbf{JSON}.
+
+\subsection{Modellazione della parte fisica - lato server}
+\subsection{Modellazione della parte logica - lato server}
+\section{Design}
+Il sistema che si suddivide in più aree:
+\begin{enumerate}
+	\item I/O locale attraverso Arduino UNO
+	\item feedback remoto su browser
+	\item input per invio dei dati seriali al server attraverso async task Python
+	\item connessione USB da Arduino UNO verso il PC
+	\item connessione del PC ad un server
+	\item sito internet come GUI remota
+	\item gestione del server remoto
+\end{enumerate}
+
+Le tecno
+
+– processo finalizzato alla creazione degli artefatti tecnologici che
+rappresentano il sistema
+– rappresentano come il sistema fa quello che deve fare
+\section{Analysis}
+
+
+Potenzialità software di Arduino UNO sfruttate:
+
+
+
+Potenzialità hardware di Arduino UNO sfruttate:
+\begin{itemize}
+	\item sono stati utilizzati tutti i 12 pin di I/O digitale;
+	\item si è cercato di limitare l'utilizzo di \textbf{delay} per mantenere le prestazioni ottimali;
+	\item in alcuni casi al posto dei \textit{delay} si è fatto ricorso a dei \textbf{custom timer} impiegando il metodo \textbf{millis()};
+\end{itemize}
