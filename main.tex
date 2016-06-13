@@ -11,22 +11,18 @@
 %\renewcommand{\sfdefault}{phv}
 %courier
 %\renewcommand{\sfdefault}{pcr}
-
+\usepackage{listings}
+\usepackage{color}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{sidecap}
-
 \usepackage{quoting}
 \quotingsetup{font=small}
-
-
 \usepackage{eurosym}
 \usepackage{graphicx}
 \usepackage{epsfig}
 \usepackage{url}
-\usepackage{listings}
 \usepackage{comment}
-\usepackage{color}
 \usepackage{amsmath}
 \usepackage[dvipsnames]{xcolor}
 %%https://en.wikibooks.org/wiki/LaTeX/Colors
@@ -39,77 +35,31 @@
 	,linkcolor=black
 }
 
-\lstdefinelanguage{XML}
-{
-	basicstyle=\scriptsize,
-	sensitive=true,
+\lstdefinestyle{customc}{
+	belowcaptionskip=1\baselineskip,
+	breaklines=true,
+	frame=L,
+	%xleftmargin=\parindent,
+	language=C++,
 	showstringspaces=false,
-	numbers=left,
-	numberstyle=\tiny,
-	tabsize=4,
-	numbersep=3pt,
-	extendedchars=true,
-	xleftmargin=2em,
-	lineskip=1pt,
-	breaklines,
-	captionpos=t,
-	backgroundcolor=\color{lightgray},
-	morekeywords={android},
-	alsoletter={:,,/,?},
-	morestring=[b]{"},
-	morecomment=[s]{&lt;!--}{--&gt;},
-	keywordstyle=\color{forestGreen},
-	identifierstyle=\color{blue}\ttfamily,
-	stringstyle=\color{orangeRed}\ttfamily,
-	commentstyle=\color{forestGreen}\ttfamily
+	basicstyle=\footnotesize\ttfamily,
+	keywordstyle=\bfseries\color{green!40!black},
+	commentstyle=\itshape\color{purple!40!black},
+	identifierstyle=\color{blue},
+	stringstyle=\color{orange},
 }
 
-\lstset
-{ 	
-	language=Bash,
-	basicstyle=\scriptsize,
-	sensitive=true,
-	showstringspaces=false,
-	numbers=none,
-	numberstyle=\tiny,
-	tabsize=4,
-	numbersep=3pt,
-	extendedchars=true,
-	xleftmargin=2em,
-	lineskip=1pt,
-	breaklines,
-	captionpos=t,
-	backgroundcolor=\color{lightgray},
-	morestring=[b]{"},
-	morecomment=[l]{\#},
-	keywordstyle=\color{forestGreen},
-	identifierstyle=\color{codegreen}\ttfamily,
-	stringstyle=\color{codepurple}\ttfamily,
-	commentstyle=\color{codegray}\ttfamily
+\lstdefinestyle{customasm}{
+	belowcaptionskip=1\baselineskip,
+	frame=L,
+	%xleftmargin=\parindent,
+	language=[x86masm]Assembler,
+	basicstyle=\footnotesize\ttfamily,
+	commentstyle=\itshape\color{purple!40!black},
 }
 
-\lstset
-{ language=C++,
-	basicstyle=\scriptsize,
-	sensitive=true,
-	showstringspaces=false,
-	numberstyle=\tiny,
-	tabsize=4,
-	numbersep=3pt,
-	extendedchars=true,
-	xleftmargin=2em,
-	lineskip=1pt,
-	breaklines,
-	captionpos=t,
-	backgroundcolor=\color{lightgray},
-	morestring=[b]{"}, 
-	morecomment=[s]{/*}{*/},
-	morecomment=[l]{//},
-	keywordstyle=\color{orangeRed},
-	identifierstyle=\color{blue}\ttfamily,
-	stringstyle=\color{codepurple}\ttfamily,
-	commentstyle=\color{codegray}\ttfamily
-}
+\lstset{escapechar=@,style=customc}
+
 
 %opening
 \title{Programmazione di Sistemi Embedded\\ {\Large Jimmy Challenge Arduino Game}}

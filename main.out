@@ -26,9 +26,10 @@
 \BOOKMARK [2][-]{subsection.4.1.7}{LedPwmTask}{section.4.1}% 26
 \BOOKMARK [2][-]{subsection.4.1.8}{LedRgbTask}{section.4.1}% 27
 \BOOKMARK [1][-]{section.4.2}{Scheduler}{chapter.4}% 28
-\BOOKMARK [0][-]{appendix.Alph1}{Elenco dei componenti utilizzati}{}% 29
-\BOOKMARK [1][-]{section.Alph1.1}{Componenti hardware}{appendix.Alph1}% 30
-\BOOKMARK [1][-]{section.Alph1.2}{Componenti software}{appendix.Alph1}% 31
-\BOOKMARK [0][-]{appendix.Alph2}{Schema di collegamento}{}% 32
-\BOOKMARK [1][-]{section.Alph2.1}{Sketch Arduino - lato client}{appendix.Alph2}% 33
-\BOOKMARK [1][-]{section.Alph2.2}{Sketch Odroid - lato server}{appendix.Alph2}% 34
+\BOOKMARK [1][-]{section.4.3}{Context}{chapter.4}% 29
+\BOOKMARK [0][-]{appendix.Alph1}{Elenco dei componenti utilizzati}{}% 30
+\BOOKMARK [1][-]{section.Alph1.1}{Componenti hardware}{appendix.Alph1}% 31
+\BOOKMARK [1][-]{section.Alph1.2}{Componenti software}{appendix.Alph1}% 32
+\BOOKMARK [0][-]{appendix.Alph2}{Schema di collegamento}{}% 33
+\BOOKMARK [1][-]{section.Alph2.1}{Sketch Arduino - lato client}{appendix.Alph2}% 34
+\BOOKMARK [1][-]{section.Alph2.2}{Sketch Odroid - lato server}{appendix.Alph2}% 35
