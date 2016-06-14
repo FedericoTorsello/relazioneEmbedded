@@ -7,6 +7,46 @@ Il sistema realizzato deve permettere ad uno o più giocatori di competere per s
 Le performance utili per la buona riuscita del progetto a cui non si può rinunciare riguardano la rilevazione della distanza e l'invio dei feedback locali/remoti.
 Il tempo gioca un ruolo importante in questo progetto, quindi si devono evitare inutili ritardi nella rilevazione ed invio delle informazioni.
 
+\newpage
+\section{Casi d'uso}
+\subsection{Caso d'uso 1}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.4]{img/UML/UseCases/case1.png}
+	\caption{Caso d'uso 1}
+\end{figure}
+\begin{table}[]
+	\centering
+	\caption{Caso d'uso 1}
+	\begin{tabular}{ll}
+		\textbf{ID}                                          & UC1                                                                                                                                                                                                                                            \\ \hline
+		\multicolumn{1}{|l|}{\textbf{ATTORI}}                & \multicolumn{1}{l|}{Giocatore}                                                                                                                                                                                                                 \\ \hline
+		\multicolumn{1}{|l|}{\textbf{PRECONDIZIONI}}         & \multicolumn{1}{l|}{Il giocatore vuole iniziare una partita single player}                                                                                                                                                                      \\ \hline
+		\multicolumn{1}{|l|}{\textbf{SEQUENZA DEGLI EVENTI}} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}1. Il caso d'uso inizia quando un giocatore vuole giocare a Jimmy Challenge.\\ 2. Il giocatore deve alimentare l'Arduino per poter giocare.\\ 3. Il programma inizia ad eseguire.\end{tabular}} \\ \hline
+		\multicolumn{1}{|l|}{\textbf{POSTCONDIZONI}}         & \multicolumn{1}{l|}{1. Il giocatore gioca.}                                                                                                                                                                                                    \\ \hline
+	\end{tabular}
+\end{table}
+
+\newpage
+\subsection{Caso d'uso 2}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.4]{img/UML/UseCases/case2.png}
+	\caption{Caso d'uso 2}
+\end{figure}
+\begin{table}[]
+	\centering
+	\caption{Caso d'uso 2}
+	\begin{tabular}{ll}
+		\textbf{ID}                                          & UC2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  \\ \hline
+		\multicolumn{1}{|l|}{\textbf{ATTORI}}                & \multicolumn{1}{l|}{Giocatore 1, Giocatore 2}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        \\ \hline
+		\multicolumn{1}{|l|}{\textbf{PRECONDIZIONI}}         & \multicolumn{1}{l|}{I due attori vogliono giocare una partita a Jimmy Challenge multiplayer online.}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 \\ \hline
+		\multicolumn{1}{|l|}{\textbf{SEQUENZA DEGLI EVENTI}} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}1. Il caso d'uso inizia quando i due giocatori vogliono giocare online e si collegano al sito.\\ 2. I giocatori devono collegare al PC l'Arduino.\\ 3. I giocatori devono far avviare lo script in Python per inviare i dati al server.\\ 4. I giocatori devono effettuare l'accesso al sito.\\ 5. I giocatori possono chattare.\\ 6. I giocatori devono invitarsi ad iniziare una nuova partita.\\ 7. I giocatori iniziano a giocare.\\ 8. Ogni giocatore può controllare lo stato della partita dell'altro giocatore.\end{tabular}} \\ \hline
+		\multicolumn{1}{|l|}{\textbf{POSTCONDIZONI}}         & \multicolumn{1}{l|}{1. I due giocatori giocano.}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     \\ \hline
+	\end{tabular}
+\end{table}
+
+\newpage
 \section{Modeling}
 Il sistema si suddivide in più parti:
 \begin{itemize}
@@ -66,11 +106,11 @@ Per quanto riguarda la connessione USB, per scelta progettuale, tutti i dati inv
 \subsection{Modellazione della parte fisica - lato server}
 A lato server si ha un Odroid C2 (prodotto da \href{http://www.hardkernel.com/main/main.php}{Hardkernel}) con sistema operativo Arch Linux ARM:
 \begin{itemize}
-	\item CPU: ARM Cortex-A53 Quad Core 2GHz
-	\item RAM: 2GB DDR3
-	\item 40pin GPIOs + 7pin I2S
-	\item Gigabit Ethernet
-	\item 4 x USB 2.0
+	\item CPU: ARM Cortex-A53 Quad Core 2GHz;
+	\item RAM: 2GB DDR3;
+	\item 40pin GPIOs + 7pin I2S;
+	\item Gigabit Ethernet;
+	\item 4 x USB 2.0.
 \end{itemize}
 Il dispostivo è collegato in rete e funge da server per abilitare la modalità multiplayer di Jimmy Challenge dalla parte client tramite lo script python in esecuzione sul dispositivo collegato all'Arduino.\\
 In un'ottica più orientata all'hardware, al server è collegato un LCD 16x2 che mostra alcune statistiche sullo stato attuale dei servizi e delle risorse.
@@ -111,13 +151,13 @@ I dati stampati sullo schermo LCD sono collezionati e formattati tramite uno scr
 \section{Design}
 Il sistema si suddivide in più aree:
 \begin{enumerate}
-	\item connessione USB da Arduino UNO verso il PC
-	\item I/O locale attraverso Arduino UNO
-	\item input per invio dei dati seriali al server attraverso Python
-	\item connessione del PC ad un server
-	\item feedback remoto su browser
-	\item sito internet come GUI remota
-	\item gestione del server remoto
+	\item connessione USB da Arduino UNO verso il PC;
+	\item I/O locale attraverso Arduino UNO;
+	\item input per invio dei dati seriali al server attraverso Python;
+	\item connessione del PC ad un server;
+	\item feedback remoto su browser;
+	\item sito internet come GUI remota;
+	\item gestione del server remoto.
 \end{enumerate}
 
 \section{Analysis}
@@ -125,10 +165,10 @@ Potenzialità software di Arduino UNO sfruttate:
 \begin{itemize}
 	\item programmazione Object-Oriented con \href{https://it.wikipedia.org/wiki/Wiring}{Wiring \footnote{Wiring - linguaggio di programmazione semplice e intuitivo derivato dal C e dal C++}}.
 	\begin{itemize}
-		\item modularizzazione in classi,
-		\item utilizzo di oggetti e metodi,
-		\item information hiding, 
-		\item ereditarietà, 
+		\item modularizzazione in classi;
+		\item utilizzo di oggetti e metodi;
+		\item information hiding;
+		\item ereditarietà;
 		\item polimorfismo.
 	\end{itemize}
 	\item utilizzo di \textit{lambda expressions}

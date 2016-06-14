@@ -76,17 +76,18 @@ Sintassi accettate dal compilatore di Arduino:
 
 \subsubsection{Vantaggi}
 \begin{itemize}
-	\item è possibile creare una classe "generica" che può avere più istanze a cui assegnare più behaviour;
+	\item è possibile creare una classe "generica" che può avere più istanze a cui assegnare più \textit{behaviour};
 	\item si evita di dover creare per ogni comportamento una classe specifica;
 	\item codice modulare, (diverse istanze dello stesso oggetto possono avere diversi body);
 	\item definizione del comportamento direttamente dal file \texttt{*.ino}.
 \end{itemize}
 
 \subsubsection{Contro}
-Per utilizzare le lambda expression siamo stati costretti a rinunciare parzialmente all'\textit{information hiding} della programmazione OO. Questo vincolo è legato al fatto che non è stato possibile passare oggetti come parametro di chiusura a causa di alcuni vincoli del linguaggio usato da Arduino.
+Utilizzare le lambda expression ci ha portati ad un \textit{trade-off}, cioè siamo stati costretti a rinunciare parzialmente all'\textit{information hiding} della programmazione OO al fine di ottenere i vantaggi sopra citati. Questa rinuncia è legata al fatto che non è stato possibile passare oggetti come chiusura a causa di alcuni vincoli del linguaggio usato da Arduino.
 
-L'unico modo per passare gli oggetti e quindi i metodi all'interno di queste particolari funzioni è stato mettere tutto \texttt{public}.
+L'unico modo per utilizzare i metodi richiamati all'interno di queste particolari funzioni è stato dichiarare tali metodi come \texttt{public}.
 
+\newpage
 \subsection{Generalizzazione del funzionamento di un task}
 \begin{figure}[!ht]
 	\centering
@@ -94,7 +95,22 @@ L'unico modo per passare gli oggetti e quindi i metodi all'interno di queste par
 	\caption{Generalizzazione dei task}
 \end{figure}
 
-\subsubsection{Elenco dei Task sviluppati:}
+\newpage
+\section{Scheduler}
+Lo Scheduler coordina e fa cooperare i task del sistema.
+
+Al suo interno è presente il vettore \texttt{taskList[...]} in cui sono aggiunti i task da eseguire grazie al metodo \texttt{bool addTask(Task* task)}.
+
+Nel caso in cui nello Scheduler non ci fossero task o fossero stati tutti bloccati, il sistema rimarrebbe apparentemente fermo (anche se in realtà il microcontrollore continuerebbe ad eseguire il suo \texttt{void loop()}).
+
+Lo Scheduler è \textbf{cooperativo} in quanto una volta selezionato un task, questo viene eseguito fino al suo completamento (\textit{run-to-completion}). Ad ogni tick della FSM vengono eseguite atomicamente le azioni associate al nuovo stato.
+
+Lo scheduling è a \textbf{priorità statica}, in quanto ad ogni task viene assegnata una priorità che non cambia durante l'esecuzione. La si può considerare come definita implicitamente dall'ordine di inserimento dei task nella \textit{task list}.
+
+\section{Context}\label{sec:contextgeneric}
+La classe Context contiene tutti le variabili di stato del programma. I metodi al suo interno sono accessibili da tutti i task in modo da far evolvere il sistema; di seguito la lista di tutti i metodi e del loro significato.
+
+\section{Elenco dei Task sviluppati:}
 \begin{enumerate}
 	\item SonarTask
 	\item ButtonTask
@@ -133,8 +149,13 @@ Sul Context:
 	\item in base al tempo passato nello scassinare il lucchetto (e quindi allo \texttt{status} in cui ci si trova), viene settato \texttt{pContex->setDangerLevel(...)} con un numero da 0 a 4, (che nel LedRgbTask indica il colore da visualizzare sul LED RGB).
 \end{itemize}
 Per la rilevazione della distanza della mano dal sensore è stata utilizzata la libreria \textbf{NewPing} \ref{sec:newping}.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.35]{img/UML/sonartask.png}
+	\caption{Diagramma di attività - playLevel()}
+\end{figure}
 
-
+\newpage
 \subsection{ButtonTask}
 Questo task controlla se è avvenuta la pressione del \textit{button}.
 Finché il gioco non è finito è possibile stampare su terminale un messaggio che indica la posizione del lucchetto. 
@@ -203,19 +224,7 @@ Funzionamento:
 	\end{itemize}
 \end{itemize}
 
-\section{Scheduler}
-Lo Scheduler coordina e fa cooperare i task del sistema.
 
-Al suo interno è presente il vettore \texttt{taskList[...]} in cui sono aggiunti i task da eseguire grazie al metodo \texttt{bool addTask(Task* task)}.
-
-Nel caso in cui nello Scheduler non ci fossero task o fossero stati tutti bloccati, il sistema rimarrebbe apparentemente fermo (anche se in realtà il microcontrollore continuerebbe ad eseguire il suo \texttt{void loop()}).
-
-Lo Scheduler è \textbf{cooperativo} in quanto una volta selezionato un task, questo viene eseguito fino al suo completamento (\textit{run-to-completion}). Ad ogni tick della FSM vengono eseguite atomicamente le azioni associate al nuovo stato.
-
-Lo scheduling è a \textbf{priorità statica}, in quanto ad ogni task viene assegnata una priorità che non cambia durante l'esecuzione. La si può considerare come definita implicitamente dall'ordine di inserimento dei task nella \textit{task list}.
-
-\section{Context}\label{sec:contextgeneric}
-La classe Context contiene tutti le variabili di stato del programma. I metodi al suo interno sono accessibili da tutti i task in modo da far evolvere il sistema; di seguito la lista di tutti i metodi e del loro significato.
 
 
 
