@@ -1,5 +1,3 @@
-\chapter{Modellazione del sistema software}
-
 \chapter{Classi astratte}
 \section{Interfacce sviluppate}
 \begin{enumerate}
@@ -10,12 +8,14 @@
 \end{enumerate}
 
 \subsection{Audio.h}
+Questa classe è l'astrazione della gestione di eventi sonori, in cui ogni suono da emettere dovrebbe avere un numero univoco assegnato. All'interno del sistema viene implementata dalle classi Buzzer.
 \subsubsection{Metodi}
 \begin{itemize}
-	\item \texttt{public virtual void playSound (int) = 0}
+	\item \texttt{public virtual void playSound(int) = 0}
 \end{itemize}
 
 \subsection{Input.h}
+Questa classe è l'interfaccia da implementare per gestire gli eventi di input da parte dei vari device, che nel progetto sono il sonar e il button.
 \subsubsection{Metodi}
 \begin{itemize}
 	\item 	\begin{verbatim}
@@ -31,6 +31,7 @@
 \end{itemize}
 
 \subsection{Light.h}
+Questa interfaccia rappresenta la gestione dei LED attraverso la loro accensione/spegnimento al fine di rendere un feedback visivo al giocatore.
 \subsubsection{Metodi}
 \begin{itemize}
 	\item \texttt{public virtual void switchOn() = 0;}
@@ -38,89 +39,9 @@
 \end{itemize}
 
 \subsection{LightPwm.h}
+Interfaccia che estende l'interfaccia Light, permettendo di gestire il feedback luminoso dei LED come la variazione dell'intensità luminosa, agendo sui pin PWM.
 \subsubsection{Metodi}
 \begin{itemize}
-	\item \texttt{virtual void setIntensity(uint8\_t) = 0;}
+	\item \texttt{public virtual void setIntensity(uint8\_t) = 0;}
 \end{itemize}
 
-\chapter{Classi concrete}
-\section{Classi concrete sviluppate}
-\begin{itemize}
-	\item Classi utilizzate per l'input:
-	\begin{enumerate}
-		\item Sonar.cpp, Sonar.h;
-		\item Button.cpp, Button.h.
-	\end{enumerate}
-	\item Classi utilizzate per l'output:
-	\begin{enumerate}
-		\item Buzzer.cpp, Buzzer.h;
-		\item Led.cpp, Led.h;
-		\item LedPwm.cpp, LedPwm.h;
-		\item LedRgb.cpp, LedRgb.h;
-		\item MessageService.cpp, MessageService.h;
-		\item Multiplexer.cpp, Multiplexer.h.
-	\end{enumerate}
-\end{itemize}
-
-\subsection{Sonar.cpp, Sonar.h}
-\subsubsection{Metodi}
-\begin{itemize}
-	\item \texttt{int readDistance();}
-\end{itemize}
-
-\subsection{Button.cpp, Button.h}
-\subsubsection{Metodi}
-\begin{itemize}
-	\item \texttt{bool readBool();}
-\end{itemize}
-
-\subsection{Buzzer.cpp, Buzzer.h}
-\subsubsection{Metodi}
-\begin{itemize}
-	\item \texttt{public void playSound(const int sound);}
-	\item \texttt{private void playMarioTheme();}
-	\item \texttt{private void buzz(int, int);}
-\end{itemize}
-
-\subsection{Led.cpp, Led.h}
-\subsubsection{Metodi}
-\begin{itemize}
-	\item \texttt{protected	void switchOn();}
-	\item \texttt{protected	void switchOff();}
-\end{itemize}
-
-\subsection{LedPwm.cpp, LedPwm.h}
-\subsubsection{Metodi}
-\begin{itemize}
-	\item \texttt{public void setIntensity(uint8\_t);}
-	\item \texttt{public void switchOn();}
-	\item \texttt{public void switchOff();}
-\end{itemize}
-
-\subsection{LedRgb.cpp, LedRgb.h}
-\subsubsection{Metodi}
-\begin{itemize}
-	\item \texttt{public void setColor(int, int, int);}
-	\item \texttt{protected	void switchOn();}
-	\item \texttt{protected	void switchOff();}
-\end{itemize}
-
-\subsection{MessageService.cpp, MessageService.h}
-\subsubsection{Metodi}
-\begin{itemize}
-	\item \texttt{public void init(const int, const String \&);}
-	\item \texttt{public void setMessage(String);}
-	\item \texttt{public String getMessage();}
-	\item \texttt{public void errorMsg();}
-	\item \texttt{public void ackMsg(const String);}
-	\item \texttt{public void sendMsg(const String, const String);}
-	\item \texttt{public void sendInfo(const int, const int, const uint8\_t, const String);;}
-\end{itemize}
-
-\subsection{Multiplexer.cpp, Multiplexer.h}
-\subsubsection{Metodi}
-\begin{itemize}
-	\item \texttt{public void switchOn(int);}
-	\item \texttt{public void carouselYellow(int);}
-	\item \texttt{public void carouselRed(int);}
-\end{itemize}

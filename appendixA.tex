@@ -4,49 +4,85 @@
 \begin{itemize}
 	\item Componenti lato client:
 	\begin{itemize}
-		\item Arduino UNO
-		\item Breadboard
-		\item Cavi di collegamento
-		\item Resistori
-		\item Sensore di prossimità ad ultrasuoni HC-SR04
-		\item Buzzer
-		\item Potenziometro
-		\item Multiplexer CD4067B
-		\item Button
-		\item LED verde
-		\item LED RGB
-		\item LED rosso 6 pin
-		\item LED giallo 6 pin
+		\item Arduino UNO;
+		\item resistori;
+		\item sensore di prossimità ad ultrasuoni HC-SR04;
+		\item buzzer;
+		\item potenziometro;
+		\item multiplexer CD4067B;
+		\item button;
+		\item LED verde;
+		\item LED RGB;
+		\item LED rosso a 12 pin;
+		\item LED giallo a 12 pin;
+		\item breadboard;
+		\item cavi di collegamento;
 	\end{itemize}
 \end{itemize}
 
 \begin{itemize}
 	\item Componenti lato server:
 	\begin{itemize}
-		\item Odroid C2
-		\item Monitor LCD
+		\item Odroid C2;
+		\item monitor LCD;
+		\item potenziometro;
+		\item breadboard;
+		\item cavi di collegamento.
 	\end{itemize}
 \end{itemize}
 
 \section{Componenti software}
-Librerie Arduino:
+\subsection{Librerie Arduino}
 \begin{itemize}
-	\item \href{http://playground.arduino.cc/Code/NewPing}{NewPing}
-	\item \href{https://github.com/bblanchon/ArduinoJson}{ArduinoJson} 
+	\item \href{http://playground.arduino.cc/Code/NewPing}{NewPing};
+	\item \href{https://github.com/bblanchon/ArduinoJson}{ArduinoJson}.
 \end{itemize}
-IDE utilizzati: 
+
+\subsubsection{\underline{\href{http://playground.arduino.cc/Code/NewPing}{NewPing}}}\label{sec:newping}
+\textbf{Caratteristiche}
 \begin{itemize}
-	\item \href{https://atom.io/}{Atom} con \href{ http://platformio.org/}{PlatformIO} 
-	\item \href{https://www.arduino.cc/en/Main/Software}{Arduino IDE} (per alcuni test sulla comunicazione seriale) 
+	\item Funziona con diversi modelli di sensori ad ultrasuoni: SR04, SRF05, SRF06, DYP-ME007 e Parallax Ping™;
+	\item Non ha un \textbf{lag} di un secondo se non si riceve un ping di eco
+	\item Ping coerente e affidabile fino a 30 volte al secondo.
+	\item Timer interrupt method per sketch event-driven
+	\item Metodo di filtro digitale Built-in \texttt{ping\_median()} per facilitare la correzione degli errori.
+	\item Utilizzo dei registri delle porte durante l'accesso ai pin per avere un'esecuzione più veloce e dimensioni del codice ridotte.
+	\item Consente l'impostazione di una massima distanza di lettura del ping "in chiaro".
+	\item Facilita l'utilizzo di più sensori.
+	\item Calcolo distanza preciso, in centimetri, pollici e uS.
+	\item Non fa uso di \texttt{pulseIn}, in quanto lento e con alcuni modelli di sensore a ultrasuoni restituisce risultati errati.
+	\item Attualmente in sviluppo, con caratteristiche che vengono aggiunte e bug/issues affrontati.
 \end{itemize}
-Linguaggi di sviluppo:
+
+\subsubsection{\underline{\href{https://github.com/bblanchon/ArduinoJson}{ArduinoJson}}}\label{sec:arduinojason}
+\textbf{Caratteristiche}
 \begin{itemize}
-	\item Wiring/C++, per lo sketch Arduino lato client 
-	\item Python
-	\item JSON per la codifica della comunicazione USB e remota
-	\item HTML ...
+	\item codifica/decodifica JSON;
+	\item API di facile utilizzo;
+	\item allocazione di memoria fissa (senza malloc);
+	\item nessuna \textit{data duplication} (evitando la copia);
+	\item portatile (scritto in C++98);
+	\item non ha dipendenze esterne;
+	\item libreria leggera;
+	\item MIT License.
 \end{itemize}
-Altro:
+
+\subsection{IDE utilizzati}
 \begin{itemize}
-	\item \href{http://fritzing.org}{Fritzing} per lo schema di collegamento
+	\item \href{https://atom.io/}{Atom} con \href{ http://platformio.org/}{PlatformIO};
+	\item \href{https://www.arduino.cc/en/Main/Software}{Arduino IDE} (per alcuni test sulla comunicazione seriale).
+\end{itemize}
+
+\subsection{Linguaggi di sviluppo}
+\begin{itemize}
+	\item Wiring/C++;
+	\item Python;
+	\item JSON;
+	\item HTML;
+	\item ....
+\end{itemize}
+
+\subsection{Altro}
+\begin{itemize}
+	\item \href{http://fritzing.org}{Fritzing} per riportare gli schemi di collegamento.
 \end{itemize}

@@ -1,114 +1,336 @@
-\section{Networking e Sicurezza}
+\chapter{Multi-Tasking}
 
-Il mondo embedded e IoT che si sta sviluppando in questi anni, grazie anche alla presenza sempre maggiore di dispositivi dal rapporto prestazioni/prezzo vantaggioso, avvicina molti \textit{inesperti} al mondo dell'elettronica/informatica, permettendo una rapida diffusione e quindi lo sviluppo di nuove librerie e sistemi software orientati all'IoT. Questo \textit{trend} si sta materializzando con l'avvento di in un nuovo mercato sempre più vasto, composto da produttori di device dalle dimensioni ridotte che risultano essere performanti, economici, perfetti per realizzazioni embedded.
+\section{Task}
+I task rappresentano le azioni da eseguite concorrentemente nel sistema, pianificare dallo Scheduler. 
 
-A causa di questo sviluppo, quasi incrontrollato, in cui tutto può e viene  collegato \textit{online}, si è persa la visione della \textbf{sicurezza dei sistemi} (hardware e software). I primi attacchi a questi sistemi hanno avuto facilità di esecuzione e una rapidissima diffusione (una breve lista di attacchi a sistemi IoT nel 2015 \url{http://tinyurl.com/honlko2}).
-
-In questo scenario, dalla parte dei produttori hardware si registra una mancanza o addirittura una resistenza nel supporto nella correzione di falle o al rilascio di aggiornamenti firmware, a causa di \textbf{codice proprietario non modificabile} o economicamente svantaggioso per l'azienda stessa. Per certi versi si potrebbe parlare di \textbf{obsolescenza programmata}.
-
-Anche da parte degli utilizzatori dei sistemi finali, non si evince una particolare attenzione ai problemi relativi alla sicurezza a causa di scarse conoscenze del sistema in uso o del \textit{closed source} dello stesso. È tristemente noto che lo sviluppo di questi dispositivi \textit{perennemente connessi}, non prende quasi mai in considerazione le problematiche relative alla sicurezza derivata dalla connessione a sistemi più \textit{fragili} o legate all'interazione con altri device (perdita di privacy o di prestazioni, utilizzo improprio di risorse di rete).
-
-Jimmy Challenge è stato sviluppato garantendo la sicurezza del sistema e degli utenti che lo utilizzano. In questo capitolo verranno presentate alcune delle soluzioni adottate e le tecnologie utilizzate per l'implementazione dell'applicativo lato server.
-In generale si è preferito utilizzare esclusivamente software \textit{open-source} (ove possibile).
-
-\subsection{Sistema Operativo}
-Il server (fisicamente un \textbf{Odroid C2}) esegue una distribuzione Arch Linux ARM a 64-bit. Questa distro, più \textit{bleeding edge} per quanto riguarda l'upstream degli aggiornamenti, è sempre aggiornata all'ultima versione dei software disponibile, generalmente considerata più sicura, e fornisce una libertà maggiore per quanto riguarda la configurazione del sistema stesso.
-
-\subsubsection{Software orientato alla sicurezza installato}
 \begin{itemize}
-	\item SSH con autenticazione chiave pubblica-privata RSA;
-	\item UFW come firewall per rendere disponibili soltanto alcuni servizi dall'esterno:
+	\item Dal \textbf{punto di vista del progettista}:
 	\begin{itemize}
-		\item 80: Web Server;
-		\item 22: SSH;
-		\item 443: HTTPS.
+		\item sono dei moduli software che impegnano il microprocessore per un certo periodo;
+		\item permettono di eseguire calcoli e/o azioni di I/O;
+		\item possono essere sostituiti, alterati, inibiti o modificati in base alle necessità.
 	\end{itemize}
-	\item Cerbot (https://certbot.eff.org/) per i certificati SSL/TLS;
-	\item Netdata (https://github.com/firehol/netdata) per una visualizzazione delle risorse del sistema da remoto.
-\end{itemize}
-Oltre all'installazione e alla configurazione dei software sono stati configurati diversi parametri per l'\textit{hardening} del kernel tramite \textit{sysctl} assieme ad un sistema di \textit{logging} per registare gli accessi.
-
-\subsection{NGINX e HTTPS}
-\textbf{NGINX} è un web server orientato alle performance, al ridotto consumo di risorse e alla facilità di configurazione.
-In un sistema come l'Odroid con potenza computazionale ridotta (rispetto ai classici web server) l'utilizzo di applicativi con ridotto consumo di risorse garantisce una maggiore reattività del sistema e un migliore risulto agli occhi dell'utente.
-
-La configurazione di NGINX prende in considerazione tutti i maggiori problemi legati all'esposizione di un sito e di un web server in rete: buffer overflow, DDoS, bruteforcing, sniffing, etc. e cerca di mitigare o prevenire ogni tipo di attacco senza generare intralcio o rallentamenti all'utilizzo standard del web server.
-[link configuazione NGINX]
-Grazie a \textit{Cerbot} è possibile ottenere certificati SSL/TLS gratuitamente e garantire un canale di comunicazione protetto tra client e server.
-
-L'intera configurazione di NGINX cerca di essere compatibile con gli ultimi protocolli e limitare quelli obsoleti e poco sicuri, rischiando però di ridurre la compatibilità con il browser. Per garantire ulteriori performance NGINX è abilitato ad instaurare connessioni tramite il recente HTTP/2 con i client compatibili.
-
-\subsection{MySQL, Redis}
-Con \textbf{MySQL} si gestisce il database per lo storage delle credenziali degli utenti e la lista degli utenti connessi online.
-[link dump sql]
-Un event MySQL controlla periodicamente se un utente è ancora collegato o meno.
-
-\textbf{Redis} è un applicativo per lo store di strutture dati chiave-valore in memoria. Il principale vantaggio di Redis è la sua velocità in lettura e scrittura e la facilità di utilizzo.
-Nè MySQL nè Redis sono esposti verso l'esterno ma entrambi sono protetti da password e configurati per rispettare il POLP (\textit{principle of least privilege}).
-
-\subsection{Sito Web, back-end e API RESTful}
-Il sito web (sia front-end che back-end) è stato sviluppato tenendo a mente le linee guida del W3C e del OWASP. Da test dedicati non presenta lampanti vulnerabilità come XSS (\textit{Cross-site scripting}), \textit{clickjacking} o \textit{session hijacking}.
-
-Al fine di rendere l'applicativo il più possibile portabile, sono state implementate delle API RESTful in PHP7; sia l'applicativo Python lato client, sia il sito web (tramite AJAX) utilizzano queste API.
-
-Una volta che un utente si è loggato, gli viene assegnato un JWT (JSON Web Signature) che deve essere validato ad ogni richiesta che farà l'utente da quel momento in poi. Questo \textit{token} permette di verificare l'identità dell'utente ad ogni richiesta.
-Le API possono essere invocate solo tramite richieste POST e comunicano tramite messaggi JSON appositamente formattati.
-
-In seguito al login effettuato, il sito web si presenta all'utente come un'unica pagina in cui è possibile inviare messaggi a tutti gli altri utenti collegati tramite una chat globale e selezionare un giocatore da sfidare. 
-
-Una volta iniziata una partita, nella view principale della pagina appariranno i dati relativi allo stato della partita dell'avversario. Ogni aggiornamento dello stato verso i client è effettuato tramite Server-Sent Events (SSE).
-
-Grazie ai SSE, per mezzo di pattern \textbf{publish-subscribe}:
-\begin{itemize}
-	\item si riducono i consumi di risorse computazionali
-	\item si limita l'utilizzo della banda
-	\item si eliminano i problemi di gestione di altre tecnologie come WebSocket o WebRTC.
-\end{itemize} 
-Per farlo si instaura un canale mono direzionale verso il client, attivo solo in presenta di nuovi dati.
-
-Per il back-end sono state utilizzate diverse librerie per fornire alcune funzionalità come i JWS e i SSE scelte appositamente per la loro compatibilità con gli ultimi standard e versioni di PHP al fine di garantire maggiori performance e sicurezza:
-\begin{itemize}
-	\item \textbf{jose} (\url{https://github.com/namshi/jose}) per i JWS;
-	\item \textbf{libSSE-php} (\url{https://github.com/licson0729/libSSE-php}) per SSE;
-	\item \textbf{http-foundation} (\url{https://github.com/symfony/http-foundation})
-	\item \textbf{predis} (\url{https://github.com/nrk/predis}) come dipendenze di "libSSE-php".
-\end{itemize}
-Le interazioni tramite il database MySQL avvengono per mezzo di una connessione locale, utilizzando le varie tecniche di mitigazione per SQLi di primo e secondo livello fornite dal PHP.
-
-Per proteggere la privacy degli utenti, le password sono salvate sul database come hash (usando bcrypt).
-
-\subsection{Python}
-Come anticipato nella relazione, per poter inviare al server i dati letti dalla seriale di Arduino è stato sviluppato uno script Python, in particolare \textbf{Python 3.5}.
-
-Tenendo a mente la visione di utilizzare sistemi embedded e quindi dalle capacità computazionali ridotte rispetto ad un laptop o ad un PC desktop, si è deciso di utilizzare:
-\begin{itemize}
-	\item \textbf{pyserial} (\url{https://github.com/pyserial/pyserial}) : per la lettura dei dati dalla seriale;
-	\item \textbf{ujson} (\url{https://github.com/pyserial/pyserial}) : per la i messaggi JSON;
-	\item \textbf{asyncio} (\url{https://github.com/python/asyncio}) : per eseguire le routine in maniera asincrona;
-	\item \textbf{aiohttp} (\url{https://github.com/KeepSafe/aiohttp}) : come client per asyncio.
+	\item Dal \textbf{punto di vista dell'utente} invece:
+	\begin{itemize}
+		\item  creano l'illusione di avere un unico sistema monolitico;
+		\item  la semplice esistenza e quindi la loro gestione è trasparente all'utente.
+	\end{itemize}
 \end{itemize}
 
-Per poter utilizzare lo script è necessario autenticarsi e ricevere il token JWS al fine di effettuare le richieste HTTP.
+Per la descrizione del comportamento di ogni task, si è deciso di utilizzare le lambda expression (\ref{sec:lambda}). 
 
-L'obiettivo di rendere completamente asincrono il codice ed eliminare il thread della libreria pyserial teoricamente sarebbe possibile utilizzando anche delle API per asyncio, ma al momento dello sviluppo del progetto queste soluzioni sono incomplete e non affidabili, quindi non sono state scartate.
-
-\subsubsection{Pyserial}
-La libreria \textbf{pyserial} consente la connessione all'Arduino tramite porta seriale e la lettura dei messaggi in maniera continua grazie all'utilizzo di un thread che agisce da produttore di messaggi per l'intero script.
-
-L'elaborazione di questi messaggi viene effettuata da un routine che dopo aver \textit{parsato} il messaggio li instrada al corretto destinatario. Se si deve inviare un messaggio al server, viene composto il messaggio in JSON e viene inviato tramite una richiesta HTTP POST al server.
-
-\subsubsection{Asyncio}
-A parte il thread creato per la lettura dei messaggi da Arduino, le altre \textit{routine}, o meglio, \textit{\textbf{coroutine}} sono eseguite all'interno dell'event loop di asyncio. 
-
-Asyncio fornisce una infrastruttura single-threaded per la scrittura di codice concorrente utilizzando coroutine, in particolare è consigliato per \textbf{programmi concorrenti IO-bound}. 
-
-\subsubsection{Aiohttp}
-Aiohttp fornisce un supporto per richieste HTTP asincrone tramite l'infrastruttura messe a disposizione da asyncio.
-
-Questo tipo di approccio:
+In sintesi i vari task sono istanziati definendo all'interno del \textit{body} del metodo \texttt{init(...)} ogni singolo \textit{behaviour}. Per farlo sono utilizzati: 
 \begin{itemize}
-	\item permette di ridurre i consumi di risorse;
-	\item aumentare notevolmente le performance dell'applicazione.
+	\item i metodi propri del task;
+	\item i metodi del Context \ref{sec:context} come mezzo di comunicazione tra i diversi task.
 \end{itemize}
-Questo risultato si ottiene perché la maggior parte dell'esecuzione dello script è basata sull'invio di dati al server.
+
+Questo ci ha permesso di avere più gradi di libertà nella definizione del comportamento dei task e quindi del codice da eseguire. In quest'ottica non vi è necessità di creare una classe per ogni singolo comportamento, ma basta istanziare due o più volte lo classe e definire diversi body.
+
+\subsubsection{Esempio}
+Si vogliono controllare due LED utilizzando il task LedTask; in particolare:
+\begin{itemize}
+	\item se viene trovato il lucchetto, il led1 viene acceso e il led2 viene spento,
+	\item altrimenti, se il lucchetto non viene trovato, il led1 passa a spento e il led2 diventa acceso.
+\end{itemize}
+\begin{lstlisting}[language=C++]
+ledT0 = new LedTask(led1, pContext);
+ledT0->init(50, [] {
+   	if (pContext->isPadlockDetected()) {
+   	  ledT0->led->switchOn();
+   	} else {
+   	  ledT0->led->switchOff();
+	}
+});
+sched.addTask(ledT0);
+
+ledT1 = new LedTask(led2, pContext);
+ledT1->init(50, [] {
+   	if (pContext->isPadlockDetected()) {
+	  ledT1->led->switchOn();
+   	} else {
+   	  ledT1->led->switchOff();
+	}
+});
+sched.addTask(ledT1);
+\end{lstlisting}
+
+Dopo ogni creazione, ogni task per essere eseguito deve essere aggiunto alla lista di esecuzione dello Scheduler; per farlo si usa \texttt{sched.addTask(<nome del task>)}.
+
+\subsection{Le espressioni Lambda in Wiring/C++11}\label{sec:lambda}
+Una \textbf{Lambda expression} (\textit{lambda closure}) è una funzione anonima definita al momento della chiamata. 
+
+Sintassi accettate dal compilatore di Arduino:
+\begin{lstlisting}[language=C++]
+[ capture-list ] ( params ) { body }
+[ capture-list ] { body } 
+\end{lstlisting}
+
+\subsubsection{Caratteristiche}
+\begin{itemize}
+	\item La \textit{capture list} è la lista di variabili che è possibile utilizzare oltre agli argomenti della funzione.
+	\begin{itemize}
+		\item Se si definisce \texttt{[\&]}, tutte le variabili locali saranno passate per riferimento.
+		\item Se non viene specificato niente, la \textit{lambda function} non ha variabili come argomenti e viene indicata con \texttt{[]};
+	\end{itemize}
+	\item Il tipo di ritorno è \texttt{void}, a meno che non viene specificato diversamente;
+	\item Il body della funzione che si trova tra parentesi graffe rappresenta le azioni che devono essere eseguite.
+\end{itemize}
+
+\subsubsection{Vantaggi}
+\begin{itemize}
+	\item è possibile creare una classe "generica" che può avere più istante a cui assegnare più behaviour;
+	\item si evita di dover creare per ogni comportamento una classe specifica;
+	\item codice modulare, (diverse istanze dello stesso oggetto possono avere diversi body);
+	\item definizione del comportamento direttamente dal file \texttt{*.ino}.
+\end{itemize}
+
+\subsubsection{Contro}
+Per utilizzare le lambda expression siamo stati costretti a rinunciare parzialmente all'\textit{information hiding} della programmazione OO. Questo vincolo è legato al fatto che non è stato possibile passare oggetti come parametro di chiusura.
+
+L'unico modo per passare gli oggetti e quindi i metodi all'interno di queste particolari funzioni è stato mettere tutto \texttt{public}.
+
+\subsection{Generalizzazione del funzionamento di un task}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.60]{img/task_generic.png}
+	\caption{Generalizzazione dei task}
+\end{figure}
+
+\subsubsection{Elenco dei Task sviluppati:}
+\begin{enumerate}
+	\item SonarTask
+	\item ButtonTask
+	\item BuzzerTask
+	\item LedTask
+	\item LedPwmTask
+	\item LedRgbTask
+\end{enumerate}
+
+\subsection{SonarTask}
+È il task più importante del progetto in quanto:
+\begin{itemize}
+	\item permette l'interazione utente-sistema sfruttando il sensore ad ultrasuoni;
+	\item aggiorna la \texttt{currentDistance} del Context (\ref{sec:context});
+	\item in modo indiretto può variare l'evoluzione del sistema
+\end{itemize}
+Nella classe SonarTask viene definito il metodo \texttt{privare playLevel()} in cui:
+\begin{itemize}
+	\item si legge la currentDistance dal sonar;
+	\item si setta tale currentDistance nel Context;
+	\item si gestiscono gli \texttt{status} da inviare alla seriale
+\end{itemize}
+
+Dal Context:
+\begin{itemize}
+	\item si riceve il \textbf{numero segreto} (il lucchetto, cioè la distanza dal sensore)
+	\item si riceve il \textbf{delta} (intervallo superiore/inferiore a partire dal lucchetto)
+	\item si riceve il \textbf{livello attuale} a cui si sta giocando
+	\item si controlla se il lucchetto è aperto con \texttt{pContext->isPadLockOpen()}
+\end{itemize}
+Sul Context:
+\begin{itemize}
+	\item se il lucchetto è stato aperto si crea un nuovo livello con \texttt{pContext->setNewLevel()};
+	\item se il padLock non è stato completamente sbloccato viene settato come chiuso con \texttt{pContext->setPadlockOpen(false)};
+	\item se il padLock non è stato completamente sbloccato viene resettato lo stato di scasso con \texttt{pContext->setLockpicking(false)};
+	\item in base al tempo passato nello scassinare il lucchetto (e quindi allo \texttt{status} in cui ci si trova), viene settato \texttt{pContex->setDangerLevel(...)} con un numero da 0 a 4, (che nel LedRgbTask indica il colore da visualizzare sul LED RGB).
+\end{itemize}
+
+\begin{lstlisting}[language=C++]
+void SonarTask::playLevel() {
+	currentDistance = sonar->readDistance();
+	pContext->setCurrentDistance(currentDistance);
+	int secretDistance = pContext->getSecret();
+	int currentLevel = pContext->getLevel();
+	uint8_t delta = pContext->getDelta();
+	int status = 0;
+	int feedbackDistance = 0;
+	
+	feedbackDistance = abs(currentDistance - secretDistance);
+	if (feedbackDistance == 0)
+		feedbackDistance = 0;
+	else if (currentDistance == 0)
+		feedbackDistance = 100;
+	
+	if(currentDistance <= (secretDistance + delta)
+	&& currentDistance >= (secretDistance - delta)) {
+		pContext->setPadlockDetected(true);
+		timeFound = (millis()/1000) - timeOut;     // inizializzazione a zero
+		switch (timeFound) {
+			case 0:
+			if (pContext->isPadlockOpen()) {
+				msgService.sendMsg("Lucchetto livello " + String(currentLevel) + " APERTO", F("all"));
+				pContext->setNewLevel();
+				if (!pContext->isGameOver()) {
+					status = 300 + currentLevel + 1;
+					pContext->setPadlockOpen(false);
+					pContext->setLockpicking(false);
+				}
+			} else
+			status = 101;
+			break;
+			case 1:
+			status = 101;
+			break;
+			case 2:
+			status = 102;
+			break;
+			case 3:
+			status = 103;
+			break;
+			case 4:
+			status = 104;
+			pContext->setDangerLevel(0);
+			pContext->setLockpicking(true);
+			break;
+			case 5:
+			status = 104;
+			pContext->setDangerLevel(0);
+			break;
+			case 6:
+			status = 105;
+			pContext->setDangerLevel(1);
+			pContext->setPadlockOpen(true);
+			break;
+			case 7:
+			status = 201;
+			pContext->setDangerLevel(1);
+			break;
+			case 8:
+			status = 202;
+			pContext->setDangerLevel(2);
+			break;
+			case 9:
+			status = 203;
+			pContext->setDangerLevel(3);
+			break;
+			case 10:
+			status = 204;
+			pContext->setDangerLevel(4);
+			pContext->setPadlockOpen(false);
+			break;
+			case 11:
+			status = 205;
+			pContext->setDangerLevel(4);
+			break;
+		}
+	} else {
+	timeOut = millis()/1000;
+	pContext->setPadlockDetected(false);
+	pContext->setLockpicking(false);
+}
+msgService.sendInfo(currentDistance, status, currentLevel, F("remote"));
+}
+\end{lstlisting}
+
+Per la rilevazione della distanza della mano dal sensore è stata utilizzata la libreria \textbf{NewPing} \ref{sec:newping}.
+
+
+\subsection{ButtonTask}
+Questo task controlla se è avvenuta la pressione del \textit{button}.
+Finché il gioco non è finito è possibile stampare su terminale un messaggio che indica la posizione del lucchetto. 
+
+Se il gioco è finito, ma il bottone viene comunque premuto, si avvia una divertente \textbf{\textit{easter egg}} legata al BuzzerTask e ad un famoso gioco degli anni '80\dots
+
+
+\subsection{BuzzerTask}
+Questo task controlla i suoni che il \textit{buzzer} deve emettere attraverso il metodo \texttt{buzzerT0->buzzer->playSound(<num>)}
+
+\begin{itemize}
+	\item Se il gioco non è finito e il lucchetto non è ancora stato trovato, viene emesso il suono 0;
+	\item Se il gioco non è finito e il lucchetto è stato trovato, viene emesso il suono 1;
+	\item Se il gioco è finito e il pulsante premuto, viene emesso il suono 2 (\textbf{\textit{easter egg}}).
+\end{itemize}
+
+\subsection{LedTask}
+Questo task controlla l'accensione e lo spegnimento del LED verde.
+
+\begin{itemize}
+	\item Se il gioco non è finito e il lucchetto è stato trovato, il LED viene acceso;
+	\item Se il gioco non è finito e il lucchetto non è ancora stato trovato, il LED viene spento.
+\end{itemize}
+
+\subsection{LedPwmTask}
+Questo task gestisce il LED verde utilizzando il pin PWM grazie ai seguenti metodi:
+\begin{itemize}
+	\item \texttt{ledPwmT0->ledPwm->setIntensity(<num>)} per gestire l'intensità luminosa (anche temporizzata) del LED;
+	\item \texttt{ledPwmT0->ledPwm->switchOff()} per spegnere immediatamente il LED.
+\end{itemize}
+Analizzando questo task nel dettaglio:
+\begin{itemize}
+	\item Se il lucchetto non è stato aperto e non è stato trovato:
+	\begin{itemize}
+		\item si aumenta l'intensità del LED usando un ciclo \texttt{for} inizializzato a 64 (in modo da non partire dal LED completamente spento) per arrivare a 255 (valore massimo consentito).
+		\item al termine del ciclo il LED viene spento
+	\end{itemize}
+	L'obiettivo di questo frammento di codice è far capire al giocatore che il sistema è in funzione facendo illuminare e subito spegnere il LED, come se questo emettesse tanti flash luminosi.
+	\item Se il gioco è finito:
+	\begin{itemize}
+		\item si aumenta l'intensità del LED usando un ciclo \texttt{for} inizializzato a 10 (riducendo il tempo necessario per arrivare al massimo).
+		\item all'interno di questo ciclo è stato inserito un \textbf{delay} di 3 ms per rendere più visibile il dimmeraggio
+		\item al termine del ciclo for, il LED viene spento.
+	\end{itemize}
+\end{itemize}
+
+\subsection{LedRgbTask}
+Questo task gestisce il funzionamento del LED RGB.
+
+In fase di creazione prende in input i pin PWM dell'Arduino a cui è collegato fisicamente il LED RGB (costanti \texttt{LED\_RGB\_R}, \texttt{LED\_RGB\_G}, \texttt{LED\_RGB\_B}).
+
+Funzionamento:
+\begin{itemize}
+	\item Finché il gioco non è finito:
+	\begin{itemize}
+		\item Se si è in fase di scasso, si imposta un colore nel costrutto swhitch-case in base al numero intero di \texttt{pContext->getDangerLevel()}
+			\item Nel dettaglio:
+			\begin{itemize}
+				\item 0 = \textbf{blu scuro} (inizio stato di scasso); 
+				\item 1 = \textbf{verde} (lucchetto sbloccato);
+				\item 2 = \textbf{giallo} (attenzione, rischio di rompere il lucchetto);
+				\item 3 = \textbf{rosa} (attenzione, elevato pericolo di rottura);
+				\item 4 = \textbf{rosso} (rottura del lucchetto).
+			\end{itemize}
+		\item Altrimenti si imposta un colore \textbf{\textit{light blue}} costante.
+	\end{itemize}
+\end{itemize}
+
+\section{Scheduler}
+Lo Scheduler coordina e fa cooperare i task del sistema.
+
+Al suo interno è presente il vettore \texttt{taskList[...]} in cui sono aggiunti i task da eseguire grazie al metodo \texttt{bool addTask(Task* task)}.
+
+Nel caso in cui nello Scheduler non ci fossero task o fossero stati tutti bloccati, il sistema rimarrebbe apparentemente fermo (anche se in realtà il microcontrollore continuerebbe ad eseguire il suo \texttt{void loop()}).
+
+Lo Scheduler è \textbf{cooperativo} in quanto una volta selezionato un task, questo viene eseguito fino al suo completamento (\textit{run-to-completion}). Ad ogni tick della FSM vengono eseguite atomicamente le azioni associate al nuovo stato.
+
+Lo scheduling è a \textbf{priorità statica}, in quanto ad ogni task viene assegnata una priorità che non cambia durante l'esecuzione. La si può considerare come definita implicitamente dall'ordine di inserimento dei task nella \textit{task list}.
+
+\section{Context}\label{sec:context}
+La classe Context contiene tutti le variabili di stato del programma. I metodi al suo interno sono accessibili da tutti i task in modo da far evolvere il sistema; di seguito la lista di tutti i metodi e del loro significato.
+
+\subsubsection{Metodi}
+\begin{itemize}
+	\item \texttt{bool isPadlockOpen(}) : serve a sapere se il giocatore ha aperto il lucchetto;
+	\item \texttt{void setPadlockOpen(bool padlockOpen)} : setting dello stato del lucchetto aperto/chiuso;
+	\item \texttt{bool isPadlockDetected()} : serve a sapere se il giocatore ha trovato il lucchetto, cioè la distanza giusta dal sensore;
+	\item \texttt{void setPadlockDetected(bool padlockDetected)} : set dello stato del padlock trovato o no;
+	\item \texttt{void setCurrentDistance(int currentDistance)} : set della distanza del padlock da aprire;
+	\item \texttt{int getCurrentDistance()} : restituisce la distanza a cui si trova la mano;
+	\item \texttt{void setButtonPressed(bool buttonPressed)} : set dello stato del bottone, se premuto o no;
+	\item \texttt{ bool isButtonPressed()} : restituisce lo stato del bottone;
+	\item \texttt{void setNewLevel()} : crea il nuovo livello da giocare;
+	\item \texttt{uint8\_t getDelta()} : margine di errore come scarto;
+	\item \texttt{uint8\_t getLevel()} : restituisce il livello a cui si sta giocando;
+	\item \texttt{int getSecret()} : restituisce la distanza a cui si trova il lucchetto;
+	\item \texttt{void newRandomNumber(}) : genera un nuovo numero random;
+	\item \texttt{void setGameOver(bool gameOver)} : setta lo stato del gioco, cioè se è finito o no;
+	\item \texttt{bool isGameOver()} : restituisce lo stato del gioco, finito o no;
+	\item \texttt{void setDangerLevel (uint8\_t dangerLevel)} :  set del livello di pericolo nello stato di scasso;
+	\item \texttt{uint8\_t getDangerLevel()} : restituisce il livello di pericolo nello stato di scasso;
+	\item \texttt{void setLockpicking (bool state)} : set dello stato di scasso;
+	\item \texttt{bool isLockpicking()} : indica se ci si trova nello stato di scasso;
+	\item \texttt{void carousel(uint8\_t delay1, uint8\_t delay2)} : esegue un carosello temporizzato dei due LED a 12 pin.
+\end{itemize}
+
+
 
