@@ -1,13 +1,13 @@
 \chapter{Multi-Tasking}
 
 \section{Task}
-I task rappresentano le azioni da eseguite concorrentemente nel sistema, pianificare dallo Scheduler. 
+I task rappresentano le azioni da eseguite concorrentemente nel sistema, pianificate dallo Scheduler. 
 
 \begin{itemize}
 	\item Dal \textbf{punto di vista del progettista}:
 	\begin{itemize}
-		\item sono dei moduli software che impegnano il microprocessore per un certo periodo;
-		\item permettono di eseguire calcoli e/o azioni di I/O;
+		\item sono delle entità attive dotate di un flusso di controllo autonomo che svolgono un determinato compito e che impegnano il microprocessore per un certo periodo;
+		\item permettono di elaborare dati provenienti dai sensori ed agire sugli attuatori e/o gestire eventi I/O;
 		\item possono essere sostituiti, alterati, inibiti o modificati in base alle necessità.
 	\end{itemize}
 	\item Dal \textbf{punto di vista dell'utente} invece:
@@ -16,7 +16,6 @@ I task rappresentano le azioni da eseguite concorrentemente nel sistema, pianifi
 		\item  la semplice esistenza e quindi la loro gestione è trasparente all'utente.
 	\end{itemize}
 \end{itemize}
-
 Per la descrizione del comportamento di ogni task, si è deciso di utilizzare le lambda expression (\ref{sec:lambda}). 
 
 In sintesi i vari task sono istanziati definendo all'interno del \textit{body} del metodo \texttt{init(...)} ogni singolo \textit{behaviour}. Per farlo sono utilizzati: 
@@ -24,8 +23,7 @@ In sintesi i vari task sono istanziati definendo all'interno del \textit{body} d
 	\item i metodi propri del task;
 	\item i metodi del Context \ref{sec:context} come mezzo di comunicazione tra i diversi task.
 \end{itemize}
-
-Questo ci ha permesso di avere più gradi di libertà nella definizione del comportamento dei task e quindi del codice da eseguire. In quest'ottica non vi è necessità di creare una classe per ogni singolo comportamento, ma basta istanziare due o più volte lo classe e definire diversi body.
+Questo ci ha permesso di avere più gradi di libertà nella definizione del comportamento dei task e quindi del codice da eseguire. In quest'ottica non vi è necessità di creare una classe per ogni singolo comportamento, ma basta istanziare due o più volte la classe e definire diversi body.
 
 \subsubsection{Esempio}
 Si vogliono controllare due LED utilizzando il task LedTask; in particolare:
@@ -33,7 +31,7 @@ Si vogliono controllare due LED utilizzando il task LedTask; in particolare:
 	\item se viene trovato il lucchetto, il led1 viene acceso e il led2 viene spento,
 	\item altrimenti, se il lucchetto non viene trovato, il led1 passa a spento e il led2 diventa acceso.
 \end{itemize}
-\begin{lstlisting}[language=C++]
+\begin{lstlisting}[language=C++,frame=none]
 ledT0 = new LedTask(led1, pContext);
 ledT0->init(50, [] {
    	if (pContext->isPadlockDetected()) {
@@ -54,14 +52,13 @@ ledT1->init(50, [] {
 });
 sched.addTask(ledT1);
 \end{lstlisting}
-
-Dopo ogni creazione, ogni task per essere eseguito deve essere aggiunto alla lista di esecuzione dello Scheduler; per farlo si usa \texttt{sched.addTask(<nome del task>)}.
+Dopo la creazione, il task per eseguire deve essere aggiunto alla lista di esecuzione dello Scheduler; per farlo si usa \texttt{sched.addTask(<nome del task>)}.
 
 \subsection{Le espressioni Lambda in Wiring/C++11}\label{sec:lambda}
 Una \textbf{Lambda expression} (\textit{lambda closure}) è una funzione anonima definita al momento della chiamata. 
 
 Sintassi accettate dal compilatore di Arduino:
-\begin{lstlisting}[language=C++]
+\begin{lstlisting}[language=C++,frame=none]
 [ capture-list ] ( params ) { body }
 [ capture-list ] { body } 
 \end{lstlisting}
@@ -70,23 +67,23 @@ Sintassi accettate dal compilatore di Arduino:
 \begin{itemize}
 	\item La \textit{capture list} è la lista di variabili che è possibile utilizzare oltre agli argomenti della funzione.
 	\begin{itemize}
-		\item Se si definisce \texttt{[\&]}, tutte le variabili locali saranno passate per riferimento.
+		\item Se si passa \texttt{[\&]}, tutte le variabili locali saranno passate per riferimento.
 		\item Se non viene specificato niente, la \textit{lambda function} non ha variabili come argomenti e viene indicata con \texttt{[]};
 	\end{itemize}
-	\item Il tipo di ritorno è \texttt{void}, a meno che non viene specificato diversamente;
-	\item Il body della funzione che si trova tra parentesi graffe rappresenta le azioni che devono essere eseguite.
+	\item Il tipo di ritorno è \texttt{void}, a meno che non venga specificato diversamente;
+	\item Il body della funzione che si trova tra parentesi graffe.
 \end{itemize}
 
 \subsubsection{Vantaggi}
 \begin{itemize}
-	\item è possibile creare una classe "generica" che può avere più istante a cui assegnare più behaviour;
+	\item è possibile creare una classe "generica" che può avere più istanze a cui assegnare più behaviour;
 	\item si evita di dover creare per ogni comportamento una classe specifica;
 	\item codice modulare, (diverse istanze dello stesso oggetto possono avere diversi body);
 	\item definizione del comportamento direttamente dal file \texttt{*.ino}.
 \end{itemize}
 
 \subsubsection{Contro}
-Per utilizzare le lambda expression siamo stati costretti a rinunciare parzialmente all'\textit{information hiding} della programmazione OO. Questo vincolo è legato al fatto che non è stato possibile passare oggetti come parametro di chiusura.
+Per utilizzare le lambda expression siamo stati costretti a rinunciare parzialmente all'\textit{information hiding} della programmazione OO. Questo vincolo è legato al fatto che non è stato possibile passare oggetti come parametro di chiusura a causa di alcuni vincoli del linguaggio usato da Arduino.
 
 L'unico modo per passare gli oggetti e quindi i metodi all'interno di queste particolari funzioni è stato mettere tutto \texttt{public}.
 
@@ -114,7 +111,7 @@ L'unico modo per passare gli oggetti e quindi i metodi all'interno di queste par
 	\item aggiorna la \texttt{currentDistance} del Context (\ref{sec:context});
 	\item in modo indiretto può variare l'evoluzione del sistema
 \end{itemize}
-Nella classe SonarTask viene definito il metodo \texttt{privare playLevel()} in cui:
+Nella classe SonarTask viene definito il metodo \texttt{private playLevel()} in cui:
 \begin{itemize}
 	\item si legge la currentDistance dal sonar;
 	\item si setta tale currentDistance nel Context;
@@ -123,9 +120,9 @@ Nella classe SonarTask viene definito il metodo \texttt{privare playLevel()} in 
 
 Dal Context:
 \begin{itemize}
-	\item si riceve il \textbf{numero segreto} (il lucchetto, cioè la distanza dal sensore)
-	\item si riceve il \textbf{delta} (intervallo superiore/inferiore a partire dal lucchetto)
-	\item si riceve il \textbf{livello attuale} a cui si sta giocando
+	\item si riceve il \textbf{numero segreto}: la distanza del pistoncino a partire dal punto 0, ovvero il sonar);
+	\item si riceve il \textbf{delta}: intervallo di errore in cui la posizione del pistoncino è considerata corretta;
+	\item si riceve il \textbf{livello attuale} a cui si sta giocando;
 	\item si controlla se il lucchetto è aperto con \texttt{pContext->isPadLockOpen()}
 \end{itemize}
 Sul Context:
@@ -136,7 +133,7 @@ Sul Context:
 	\item in base al tempo passato nello scassinare il lucchetto (e quindi allo \texttt{status} in cui ci si trova), viene settato \texttt{pContex->setDangerLevel(...)} con un numero da 0 a 4, (che nel LedRgbTask indica il colore da visualizzare sul LED RGB).
 \end{itemize}
 
-\begin{lstlisting}[language=C++]
+\begin{lstlisting}[language=C++,frame=none]
 void SonarTask::playLevel() {
 	currentDistance = sonar->readDistance();
 	pContext->setCurrentDistance(currentDistance);
