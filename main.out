@@ -15,21 +15,44 @@
 \BOOKMARK [2][-]{subsection.3.1.1}{Significato dei suoni e dei colori}{section.3.1}% 15
 \BOOKMARK [2][-]{subsection.3.1.2}{Superare un livello}{section.3.1}% 16
 \BOOKMARK [2][-]{subsection.3.1.3}{Stato di scasso}{section.3.1}% 17
-\BOOKMARK [0][-]{chapter.4}{Multi-Tasking}{}% 18
-\BOOKMARK [1][-]{section.4.1}{Task}{chapter.4}% 19
-\BOOKMARK [2][-]{subsection.4.1.1}{Le espressioni Lambda in Wiring/C++11}{section.4.1}% 20
-\BOOKMARK [2][-]{subsection.4.1.2}{Generalizzazione del funzionamento di un task}{section.4.1}% 21
-\BOOKMARK [2][-]{subsection.4.1.3}{SonarTask}{section.4.1}% 22
-\BOOKMARK [2][-]{subsection.4.1.4}{ButtonTask}{section.4.1}% 23
-\BOOKMARK [2][-]{subsection.4.1.5}{BuzzerTask}{section.4.1}% 24
-\BOOKMARK [2][-]{subsection.4.1.6}{LedTask}{section.4.1}% 25
-\BOOKMARK [2][-]{subsection.4.1.7}{LedPwmTask}{section.4.1}% 26
-\BOOKMARK [2][-]{subsection.4.1.8}{LedRgbTask}{section.4.1}% 27
-\BOOKMARK [1][-]{section.4.2}{Scheduler}{chapter.4}% 28
-\BOOKMARK [1][-]{section.4.3}{Context}{chapter.4}% 29
-\BOOKMARK [0][-]{appendix.Alph1}{Elenco dei componenti utilizzati}{}% 30
-\BOOKMARK [1][-]{section.Alph1.1}{Componenti hardware}{appendix.Alph1}% 31
-\BOOKMARK [1][-]{section.Alph1.2}{Componenti software}{appendix.Alph1}% 32
-\BOOKMARK [0][-]{appendix.Alph2}{Schema di collegamento}{}% 33
-\BOOKMARK [1][-]{section.Alph2.1}{Sketch Arduino - lato client}{appendix.Alph2}% 34
-\BOOKMARK [1][-]{section.Alph2.2}{Sketch Odroid - lato server}{appendix.Alph2}% 35
+\BOOKMARK [0][-]{chapter.4}{Modellazione del sistema software}{}% 18
+\BOOKMARK [0][-]{chapter.5}{Classi astratte}{}% 19
+\BOOKMARK [1][-]{section.5.1}{Interfacce sviluppate}{chapter.5}% 20
+\BOOKMARK [2][-]{subsection.5.1.1}{Audio.h}{section.5.1}% 21
+\BOOKMARK [2][-]{subsection.5.1.2}{Input.h}{section.5.1}% 22
+\BOOKMARK [2][-]{subsection.5.1.3}{Light.h}{section.5.1}% 23
+\BOOKMARK [2][-]{subsection.5.1.4}{LightPwm.h}{section.5.1}% 24
+\BOOKMARK [0][-]{chapter.6}{Classi concrete}{}% 25
+\BOOKMARK [1][-]{section.6.1}{Classi concrete sviluppate}{chapter.6}% 26
+\BOOKMARK [2][-]{subsection.6.1.1}{Sonar.cpp, Sonar.h}{section.6.1}% 27
+\BOOKMARK [2][-]{subsection.6.1.2}{Button.cpp, Button.h}{section.6.1}% 28
+\BOOKMARK [2][-]{subsection.6.1.3}{Buzzer.cpp, Buzzer.h}{section.6.1}% 29
+\BOOKMARK [2][-]{subsection.6.1.4}{Led.cpp, Led.h}{section.6.1}% 30
+\BOOKMARK [2][-]{subsection.6.1.5}{LedPwm.cpp, LedPwm.h}{section.6.1}% 31
+\BOOKMARK [2][-]{subsection.6.1.6}{LedRgb.cpp, LedRgb.h}{section.6.1}% 32
+\BOOKMARK [2][-]{subsection.6.1.7}{MessageService.cpp, MessageService.h}{section.6.1}% 33
+\BOOKMARK [2][-]{subsection.6.1.8}{Multiplexer.cpp, Multiplexer.h}{section.6.1}% 34
+\BOOKMARK [0][-]{chapter.7}{Multi-Tasking}{}% 35
+\BOOKMARK [1][-]{section.7.1}{Task}{chapter.7}% 36
+\BOOKMARK [2][-]{subsection.7.1.1}{Le espressioni Lambda in Wiring/C++11}{section.7.1}% 37
+\BOOKMARK [2][-]{subsection.7.1.2}{Generalizzazione del funzionamento di un task}{section.7.1}% 38
+\BOOKMARK [2][-]{subsection.7.1.3}{SonarTask}{section.7.1}% 39
+\BOOKMARK [2][-]{subsection.7.1.4}{ButtonTask}{section.7.1}% 40
+\BOOKMARK [2][-]{subsection.7.1.5}{BuzzerTask}{section.7.1}% 41
+\BOOKMARK [2][-]{subsection.7.1.6}{LedTask}{section.7.1}% 42
+\BOOKMARK [2][-]{subsection.7.1.7}{LedPwmTask}{section.7.1}% 43
+\BOOKMARK [2][-]{subsection.7.1.8}{LedRgbTask}{section.7.1}% 44
+\BOOKMARK [1][-]{section.7.2}{Scheduler}{chapter.7}% 45
+\BOOKMARK [1][-]{section.7.3}{Context}{chapter.7}% 46
+\BOOKMARK [1][-]{section.7.4}{Networking e Sicurezza}{chapter.7}% 47
+\BOOKMARK [2][-]{subsection.7.4.1}{Sistema Operativo}{section.7.4}% 48
+\BOOKMARK [2][-]{subsection.7.4.2}{NGINX e HTTPS}{section.7.4}% 49
+\BOOKMARK [2][-]{subsection.7.4.3}{MySQL, Redis}{section.7.4}% 50
+\BOOKMARK [2][-]{subsection.7.4.4}{Sito Web, back-end e API RESTful}{section.7.4}% 51
+\BOOKMARK [2][-]{subsection.7.4.5}{Python}{section.7.4}% 52
+\BOOKMARK [0][-]{appendix.Alph1}{Elenco dei componenti utilizzati}{}% 53
+\BOOKMARK [1][-]{section.Alph1.1}{Componenti hardware}{appendix.Alph1}% 54
+\BOOKMARK [1][-]{section.Alph1.2}{Componenti software}{appendix.Alph1}% 55
+\BOOKMARK [0][-]{appendix.Alph2}{Schema di collegamento}{}% 56
+\BOOKMARK [1][-]{section.Alph2.1}{Sketch Arduino - lato client}{appendix.Alph2}% 57
+\BOOKMARK [1][-]{section.Alph2.2}{Sketch Odroid - lato server}{appendix.Alph2}% 58

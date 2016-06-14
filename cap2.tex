@@ -3,8 +3,6 @@
 \subsection{Requisiti funzionali}
 Il sistema realizzato deve permettere ad uno o due giocatori di competere per sbloccare dei lucchetti. Ad ogni lucchetto sbloccato si supera il livello fino a quando i livelli non terminano e il gioco si dice finito. Durante il gioco sono presenti delle penalità e dei bonus.
 
-
-bbbbbb
 \subsection{Requisiti non funzionali}
 Le performance utili per la buona riuscita del progetto a cui non si può rinunciare riguardano la rilevazione della distanza e l'invio dei feedback locali/remoti.
 Il tempo gioca un ruolo importante in questo progetto, quindi si devono evitare inutili ritardi nella rilevazione ed invio delle informazioni.
@@ -12,18 +10,18 @@ Il tempo gioca un ruolo importante in questo progetto, quindi si devono evitare 
 \section{Modeling}
 Il sistema si suddivide in più parti:
 \begin{itemize}
-	\item parte fisica lato client/server
-	\item parte software lato client/server
-	\item networking lato client/server
+	\item parte fisica lato client/server;
+	\item parte software lato client/server;
+	\item networking lato client/server.
 \end{itemize}
 
 \subsection{Modellazione della parte fisica - lato client}
 Dal punto di vista fisico, si ha un Arduino UNO:
- \begin{itemize}
- 	\item connesso ad una breadboard e a dei componenti hardware attraverso i sui pin digitali
- 	\item connesso ad un PC mediante la porta USB (da cui riceve l'alimentazione a 5v). 
- \end{itemize}
- Ogni componente della breadboard ha un proprio impiego distinguendoli in \textbf{sensori} ed \textbf{attuatori} secondo la visione di \textit{sistema reattivo}.
+\begin{itemize}
+	\item connesso ad una breadboard e a dei componenti hardware attraverso i sui pin digitali
+	\item connesso ad un PC mediante la porta USB (da cui riceve l'alimentazione a 5v). 
+\end{itemize}
+Ogni componente della breadboard ha un proprio impiego distinguendoli in \textbf{sensori} ed \textbf{attuatori} secondo la visione di \textit{sistema reattivo}.
 
 	\begin{quote}
 		\textbf{Reactive system}: è l’ambiente esterno che determina gli eventi che	condizionano l’esecuzione del sistema
@@ -57,28 +55,65 @@ Per realizzare il comportamento dinamico del progettare, nella parte software si
 		\end{itemize}
 	\end{quote}
 	
-Si è fatto uso della modellazione ad oggetti, modellando ogni task come una classe separata che estende da una classe base task. In ogni task viene fatto l'\textbf{\textit{inject} del comportamento} da avere ad ogni tick.
+Si è fatto uso della programmazione ad oggetti, modellando ogni task (es. LedTask, BuzzerTask) come una classe separata che estende dalla classe base Task. In ogni \textit{task} viene fatto l'\textbf{\textit{inject} del comportamento} da avere.
 
 Il multi-tasking realizzato è cooperativo, tipo \textbf{round-robin} in quanto c'è parallelismo e le funzioni \textit{tick()} sono chiamate sequenzialmente all'interno del loop dello Scheduler.
 
 \begin{itemize}	
 	\item si è fatto uso della programmazione Object-Oriented per rendere la struttura del codice ingegneristica, lineare e scalabile;
-	\item si sono utilizzate le lambda expression per fare l'\textit{inject} di codice da eseguire nei vari task.
+	\item si sono utilizzate le lambda expression per definire il comportamento di ogni task.
 \end{itemize}
 
-Lo Scheduler utilizzato permette la cooperazione tra i task; per farlo tiene traccia della lista dei task che sono in esecuzione.
 
-Lo Scheduler è \textbf{cooperativo} in quanto una volta selezionato un task, questo viene eseguito fino al suo completamento (\textit{run-to-completion}). Ad ogni tick della macchina vengono eseguite atomicamente le azioni associate al nuovo stato.
-
-Lo scheduling è a priorità statica, in quanto ad ogni task viene assegnata una priorità che non cambia durante l'esecuzione definita implicitamente dall'ordine di inserimento dei task nell'array.
 
 La comunicazione tra i task avviene attraverso variabili condivise. Queste variabili appartengono alla classe Context.
 
 Per quanto riguarda la connessione USB, per scelta progettuale tutti i dati inviati dall'Arduino al PC sono tutti formattati in \textbf{JSON}.
 
 \subsection{Modellazione della parte fisica - lato server}
-TEST git
+A lato server si ha un Odroid C2 (prodotto da Hardkernel) con sistema operativo Arch Linux ARM:
+\begin{itemize}
+	\item CPU: ARM Cortex-A53 Quad Core 2GHz
+	\item RAM: 2GB DDR3
+	\item 40pin GPIOs + 7pin I2S
+	\item Gigabit Ethernet
+	\item 4 x USB 2.0
+\end{itemize}
+Il dispostivo è collegato in rete e funge come server per abilitare la modalità multiplayer di Jimmy Challenge dalla parte client tramite lo script python in esecuzione sul dispositivo collegato all'Arduino.\\
+In un'ottica più orientata all'hardware, al server è collegato un LCD 16x2 che mostra alcune statistiche sullo stato attuale dei servizi e delle risorse.\\
+Lo schema \ref{img:server} presenta il monitor LCD collegato ai pin GPIO dell'odroid con un potenziometro per l'aggiustamento del contrasto.\\
+Al fine di collegare in rete il server si è aggiunto un modulo WiFi (TP-Link TL-WN722N) tramite una porta USB.
+
 \subsection{Modellazione della parte logica - lato server}
+Per permettere agli utenti di giocare tra di loro online, il server dispone:
+\begin{itemize}
+	\item una interfaccia per visualizzare gli utenti loggati;
+	\item una chat globale in cui poter invitare gli utenti a giocare;
+	\item una view con lo stato del gioco.
+\end{itemize}
+La piattaforma riceve messagi JSON dallo script lato client tramite richieste POST ad un'interfaccia PHP RESTful. Una volta che le informazioni sono inviate al server, sono elaborate e pubblicate ai vari subscriber tramite Server-Sent Events.\\
+La modalità multiplayer di Jimmy Challenge in sostanza consiste in una applicazione web, quasi real-time, in cui i giocatori possono vedere, tramite l'apposita interfaccia grafica, lo stato e l'avanzamento dell'avversario nel gioco.\\
+Per garantire massime performance e sicurezza sono state adottate queste tecnologie:
+\begin{itemize}
+	\item NGINX come web server;
+	\item PHP 7 come backend e motore delle parti dinamiche dell'applicazione e che implementa l'interfaccia RESTfull;
+	\item Javascript per elaborazione lato client;
+	\item Mysql per lo store degli account degli utenti;
+	\item Redis come staging area per i dati temporanei da condividere con tutti i subscriber;
+	\item JSON come modello per i messaggi scambiati;
+	\item HTTPS over TLS
+	\item token JWS (JSON Web Signature)
+\end{itemize}
+Il monitor LCD visualizza alcune statistiche sulle risorse usate dal sistema:
+\begin{itemize}
+	\item RAM usata;
+	\item Spazio disco usato della partizione di root ('/');
+	\item Temperatura e percentuale di carico della CPU;
+	\item Indirizzo IP interno;
+	\item Traffico in upload e in download.
+\end{itemize}
+I dati stampati sullo schermo LCD sono collezionati e formattati tramite uno script python che utilizza un wrapper del porting di WiringPi (https://github.com/hardkernel/WiringPi2-Python) per i dispotivi Odroid.
+
 \section{Design}
 Il sistema che si suddivide in più aree:
 \begin{enumerate}
