@@ -15,10 +15,18 @@
 		\item MessageService.cpp, MessageService.h;
 		\item Multiplexer.cpp, Multiplexer.h.
 	\end{enumerate}
+	\item Classi utilizzate per coordinare il \textbf{multi-tasking}:
+	\begin{enumerate}
+		\item Context.h;
+		\item Scheduler.cpp, Scheduler.h;
+		\item Timer.h, Timer.cpp;
+		\item Tash.h.
+	\end{enumerate}
 \end{itemize}
 
+\section{Gestione dell'input}
 \subsection{Sonar.cpp, Sonar.h}
-Queste classi permettono di leggere la distanza tra la mano del giocatore ed il sensore ad ultrasuoni.
+Questa classe permette di leggere la distanza tra la mano del giocatore ed il sensore ad ultrasuoni.
 
 Per ottenere un input molto performante dal punto di vista del tempo e dell'accuratezza, è stata sfruttata la libreria \href{http://playground.arduino.cc/Code/NewPing}{NewPing}.
 
@@ -28,65 +36,238 @@ In particolare nel costruttore di Sonar viene istanziato un oggetto NewPing a cu
 	\item \texttt{echoPin} = pin settato come output a cui è fisicamente collegato l'echo del sonar;
 	\item \texttt{maxDistance} = limita massimo di distanza gestito oltre il quale la mano non viene rilevata e non si possono creare lucchetti.
 \end{itemize}
-
 \subsubsection{Metodi}
 \begin{itemize}
 	\item \texttt{int readDistance()}: lettura istantanea della distanza mano-sensore espressa in cm.
 \end{itemize}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.5]{img/UML/CollaborationDiagram/Sonar.png}
+	\caption{Collaboration Diagram - Sonar}
+\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.5]{img/UML/InheritanceDiagram/Sonar.png}
+	\caption{Inheritance Diagram - Sonar}
+\end{figure}
 
+\newpage
 \subsection{Button.cpp, Button.h}
+Anche questa classe implementano l'interfaccia Input. Il loro scopo è riconoscere la pressione del button, evitando gli effetti del bouncing.
+
+Il pin è stato configurato come \textit{INPUT\_PULLUP} in modo da sfruttare la resistenza interna dell'Arduino, ottenendo:
+\begin{itemize}
+	\item dei campionamenti con un rumori ridotti;
+	\item floating del button limitato.
+\end{itemize}
+Questa scelta di progetto è confermata dal tutorial \href{http://tinyurl.com/jqp8nwu}{Arduino Internal Pull-Up Resistor}.
 \subsubsection{Metodi}
 \begin{itemize}
-	\item \texttt{bool readBool();}
+	\item \texttt{bool readBool()} : prende come input il valore del pin disposto in configurazione INPUT\_PULLUP e lo nega. Se tale valore è diverso da true, alla variabile \texttt{lastDebounceTime} viene passato il valore \texttt{millis()} in modo da resettare il \textit{debouncing}.
+	Se \texttt{millis() - lastDebounceTime} è maggiore uguale al \texttt{debounceDelay} passato dal file .ino, si ritorna \texttt{true}, altrimenti \texttt{false}.
 \end{itemize}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.35]{img/UML/CollaborationDiagram/Button.png}
+	\caption{Collaboration Diagram - Button}
+\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.35]{img/UML/InheritanceDiagram/Button.png}
+	\caption{Inheritance Diagram - Button}
+\end{figure}
 
+\newpage
+\section{Gestione dell'output}
 \subsection{Buzzer.cpp, Buzzer.h}
+Questa classe gestisce il buzzer, permettendo di modulare i suoi da lui emessi. Nel progetto è stato utile per far comprendere al giocatore se il lucchetto è in stato di scasso.
 \subsubsection{Metodi}
 \begin{itemize}
-	\item \texttt{public void playSound(const int sound);}
-	\item \texttt{private void playMarioTheme();}
-	\item \texttt{private void buzz(int, int);}
+	\item \texttt{public void playSound(const int sound)} : in base al numero intero passato a questo metodo, viene calcolato il suono che il buzzer deve emettere;
+	\item \texttt{private void playMarioTheme()} : una divertente easter egg;
+	\item \texttt{private void buzz(int, int)} : attraverso dei \texttt{delayMicroseconds(\dots)} contenuti in un ciclo for, regola il tempo in cui il buzzer si trova nello stato HIGH o LOW;
 \end{itemize}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.35]{img/UML/CollaborationDiagram/Buzzer.png}
+	\caption{Collaboration Diagram - Buzzer}
+\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.35]{img/UML/InheritanceDiagram/Buzzer.png}
+	\caption{Inheritance Diagram - Buzzer}
+\end{figure}
 
+\newpage
 \subsection{Led.cpp, Led.h}
+Classi per gestire l'accensione/spegnimento dei LED a 2 pin (controllo e massa) connessi all'Arduino.
 \subsubsection{Metodi}
 \begin{itemize}
-	\item \texttt{protected	void switchOn();}
-	\item \texttt{protected	void switchOff();}
+	\item \texttt{protected	void switchOn()} : metodo che regola l'accensione istantanea del LED;
+	\item \texttt{protected	void switchOff()} : metodo che regola lo spegnimento istantaneo del LED;
 \end{itemize}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.5]{img/UML/CollaborationDiagram/Led.png}
+	\caption{Collaboration Diagram - Led}
+\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.5]{img/UML/InheritanceDiagram/Led.png}
+	\caption{Inheritance Diagram - Led}
+\end{figure}
 
+\newpage
 \subsection{LedPwm.cpp, LedPwm.h}
+Queste classi permettono il controllo l'accensione/spegnimento e dimmeraggio dei LED connessi ai pin PWM di Arduino
 \subsubsection{Metodi}
 \begin{itemize}
-	\item \texttt{public void setIntensity(uint8\_t);}
-	\item \texttt{public void switchOn();}
-	\item \texttt{public void switchOff();}
+	\item \texttt{public void setIntensity(uint8\_t)} : metodo che regola l'intensità luminosa emessa dal LED (compresa tra 0 e 255);
+	\item \texttt{public void switchOn()} : metodo che regola l'accensione istantanea del LED;
+	\item \texttt{public void switchOff()} : metodo che regola lo spegnimento istantaneo del LED;
 \end{itemize}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.4]{img/UML/CollaborationDiagram/LedPwm.png}
+	\caption{Collaboration Diagram - LedPwm}
+\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.4]{img/UML/InheritanceDiagram/LedPwm.png}
+	\caption{Inheritance Diagram - LedPwm}
+\end{figure}
 
+\newpage
 \subsection{LedRgb.cpp, LedRgb.h}
+Queste classi permettono il controllo dei LED RGB, restituendo un \textbf{colore} in base all'intensità luminosa assegnata ad ogni singolo pin.
+
+Nel dettaglio, il controllo viene eseguito istanziando tre oggetti \texttt{LedPwm} legati ad ogni colore/pin.
 \subsubsection{Metodi}
 \begin{itemize}
-	\item \texttt{public void setColor(int, int, int);}
-	\item \texttt{protected	void switchOn();}
-	\item \texttt{protected	void switchOff();}
+	\item \texttt{public void setColor(int, int, int)} : setta il colore da far vedere al giocatore;
+	\item \texttt{protected	void switchOn()} : accensione istantanea del LED RGB;
+	\item \texttt{protected	void switchOff()} : spegnimento istantaneo del LED RGB.
 \end{itemize}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.5]{img/UML/CollaborationDiagram/LedRgb.png}
+	\caption{Collaboration Diagram - LedRgb}
+\end{figure}
 
-\subsection{MessageService.cpp, MessageService.h}
-\subsubsection{Metodi}
-\begin{itemize}
-	\item \texttt{public void init(const int, const String \&);}
-	\item \texttt{public void setMessage(String);}
-	\item \texttt{public String getMessage();}
-	\item \texttt{public void errorMsg();}
-	\item \texttt{public void ackMsg(const String);}
-	\item \texttt{public void sendMsg(const String, const String);}
-	\item \texttt{public void sendInfo(const int, const int, const uint8\_t, const String)}.
-\end{itemize}
-
+\newpage
 \subsection{Multiplexer.cpp, Multiplexer.h}
+Classe che permette di gestire il multiplexer e quindi le sue uscite digitali. In questo progetto il multiplexer è strettamente legato ai LED a 12 pin regolando l'accensione/spegnimento di ogni LED interno.
 \subsubsection{Metodi}
 \begin{itemize}
-	\item \texttt{public void switchOn(int);}
-	\item \texttt{public void carouselYellow(int);}
-	\item \texttt{public void carouselRed(int);}
+	\item \texttt{public void switchOn(int)} : serve a riportare un numero da intero a decimale sulle uscite del multiplexer. Nel progetto è stato utile per visualizzare il livello a cui si sta giocando o il carosello sui LED a 12 pin;
+	\item \texttt{public void carouselYellow(int) } : carosello del LED a 12 pin giallo, cioè si illumina uno alla volta ogni LED interno per il periodo passato come intero;
+	\item \texttt{public void carouselRed(int)} : carosello del LED a 12 pin rosso, con funzionamento identico al \texttt{carouselYellow(int)}.
 \end{itemize}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.5]{img/UML/CollaborationDiagram/Multiplexer.png}
+	\caption{Collaboration Diagram - Multiplexer}
+\end{figure}
+
+\newpage
+\subsection{MessageService.cpp, MessageService.h}
+Questa classe permette di gestire l'invio e la ricezione di messaggi formattati in JSON attraverso la seriale.
+Per codificare/decodificare i messaggi JSON è stata utilizzata la libreria \href{https://github.com/bblanchon/ArduinoJson}{ArduinoJson}\ref{sec:arduinojason}, facilitando le operazioni di I/O su seriale.
+\subsubsection{Metodi}
+\begin{itemize}
+	\item \texttt{public void init(const int, const String \&)} : inizializza la seriale e stampa il messaggio di welcome;
+	\item \texttt{public void setMessage(String)} : quando un messaggio viene letto, è parsato se valido vine inviato un \textit{ACK};
+	\item \texttt{public void errorMsg()} : invia un messaggio di errore utilizzando JSON;
+	\item \texttt{public void ackMsg(const String)} : invio di un \textit{ACK} in JSON;
+	\item \texttt{public void sendMsg(const String, const String)} : crea ed invia un messaggio JSON al destinatario.
+	\item \texttt{public void sendInfo(const int, const int, const uint8\_t, const String)} : invia un \textit{service message} in JSON.
+\end{itemize}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.5]{img/UML/CollaborationDiagram/MessageService.png}
+	\caption{Collaboration Diagram - MessageService}
+\end{figure}
+
+\newpage
+\section{Coordinamento dei task}
+\section{Scheduler}
+Lo Scheduler coordina e fa cooperare i task del sistema.
+
+Al suo interno è presente il vettore \texttt{taskList[...]} in cui sono aggiunti i task da eseguire grazie al metodo \texttt{bool addTask(Task* task)}.
+
+Nel caso in cui nello Scheduler non ci fossero task o fossero stati tutti bloccati, il sistema rimarrebbe apparentemente fermo (anche se in realtà il microcontrollore continuerebbe ad eseguire il suo \texttt{void loop()}).
+
+Lo Scheduler è \textbf{cooperativo} in quanto una volta selezionato un task, questo viene eseguito fino al suo completamento (\textit{run-to-completion}). Ad ogni tick della FSM vengono eseguite atomicamente le azioni associate al nuovo stato.
+
+Lo scheduling è a \textbf{priorità statica}, in quanto ad ogni task viene assegnata una priorità che non cambia durante l'esecuzione. La si può considerare come definita implicitamente dall'ordine di inserimento dei task nella \textit{task list}.
+
+\section{Context.h}\label{sec:contextimpl}
+La classe Context contiene tutti le variabili di stato del programma. I metodi al suo interno sono accessibili da tutti i task in modo da far evolvere il sistema; di seguito la lista di tutti i metodi e del loro significato.
+\subsubsection{Metodi}
+\begin{itemize}
+	\item \texttt{bool isPadlockOpen(}) : serve a sapere se il giocatore ha aperto il lucchetto;
+	\item \texttt{void setPadlockOpen(bool padlockOpen)} : setting dello stato del lucchetto aperto/chiuso;
+	\item \texttt{bool isPadlockDetected()} : serve a sapere se il giocatore ha trovato il lucchetto, cioè la distanza giusta dal sensore;
+	\item \texttt{void setPadlockDetected(bool padlockDetected)} : set dello stato del padlock trovato o no;
+	\item \texttt{void setCurrentDistance(int currentDistance)} : set della distanza del padlock da aprire;
+	\item \texttt{int getCurrentDistance()} : restituisce la distanza a cui si trova la mano;
+	\item \texttt{void setButtonPressed(bool buttonPressed)} : set dello stato del bottone, se premuto o no;
+	\item \texttt{ bool isButtonPressed()} : restituisce lo stato del bottone;
+	\item \texttt{void setNewLevel()} : crea il nuovo livello da giocare;
+	\item \texttt{uint8\_t getDelta()} : margine di errore come scarto;
+	\item \texttt{uint8\_t getLevel()} : restituisce il livello a cui si sta giocando;
+	\item \texttt{int getSecret()} : restituisce la distanza a cui si trova il lucchetto;
+	\item \texttt{void newRandomNumber(}) : genera un nuovo numero random;
+	\item \texttt{void setGameOver(bool gameOver)} : setta lo stato del gioco, cioè se è finito o no;
+	\item \texttt{bool isGameOver()} : restituisce lo stato del gioco, finito o no;
+	\item \texttt{void setDangerLevel (uint8\_t dangerLevel)} :  set del livello di pericolo nello stato di scasso;
+	\item \texttt{uint8\_t getDangerLevel()} : restituisce il livello di pericolo nello stato di scasso;
+	\item \texttt{void setLockpicking (bool state)} : set dello stato di scasso;
+	\item \texttt{bool isLockpicking()} : indica se ci si trova nello stato di scasso;
+	\item \texttt{void carousel(uint8\_t delay1, uint8\_t delay2)} : esegue un carosello temporizzato dei due LED a 12 pin.
+\end{itemize}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.5]{img/UML/CollaborationDiagram/Context.png}
+	\caption{Collaboration Diagram - Context}
+\end{figure}
+
+\newpage
+\subsection{Scheduler.cpp, Scheduler.h}
+\subsubsection{Metodi}
+\begin{itemize}
+	\item \texttt{public void init(int)} : inizializza il base period dello Scheduler;
+	\item \texttt{public virtual bool addTask(Task *)} : aggiunge alla lista dei task ogni singolo task da eseguire;
+	\item \texttt{public virtual void schedule()} : pianifica l'esecuzione dei vari task, eseguendoli uno alla volta. Nel caso in cui un task non sia abilitato, viene semplicemente ignorato (non eseguendo il suo tick) e quindi si passa immediatamente al successivo della lista.
+\end{itemize}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.5]{img/UML/CollaborationDiagram/Scheduler.png}
+	\caption{Collaboration Diagram - Scheduler}
+\end{figure}
+
+\subsection{Timer.h, Timer.cpp}
+\subsubsection{Metodi}
+\begin{itemize}
+	\item public void setupPeriod(int) : disabilita gli \textit{interrupt}, setta i registri del Timer1 (configurando il prescale) e riabilita gli interrupt;
+	\item public void waitForNextTick() : permette di eseguire il task.
+\end{itemize}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.5]{img/UML/CollaborationDiagram/Timer.png}
+	\caption{Collaboration Diagram - Timer}
+\end{figure}
+
+\newpage
+\subsection{Task.h}
+\subsubsection{Metodi}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.5]{img/UML/CollaborationDiagram/Task.png}
+	\caption{Collaboration Diagram - Task}
+\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.35]{img/UML/InheritanceDiagram/Task.png}
+	\caption{Inheritance Diagram - Task}
+\end{figure}

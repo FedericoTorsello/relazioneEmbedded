@@ -214,32 +214,8 @@ Lo Scheduler è \textbf{cooperativo} in quanto una volta selezionato un task, qu
 
 Lo scheduling è a \textbf{priorità statica}, in quanto ad ogni task viene assegnata una priorità che non cambia durante l'esecuzione. La si può considerare come definita implicitamente dall'ordine di inserimento dei task nella \textit{task list}.
 
-\section{Context}\label{sec:context}
+\section{Context}\label{sec:contextgeneric}
 La classe Context contiene tutti le variabili di stato del programma. I metodi al suo interno sono accessibili da tutti i task in modo da far evolvere il sistema; di seguito la lista di tutti i metodi e del loro significato.
-
-\subsubsection{Metodi}
-\begin{itemize}
-	\item \texttt{bool isPadlockOpen(}) : serve a sapere se il giocatore ha aperto il lucchetto;
-	\item \texttt{void setPadlockOpen(bool padlockOpen)} : setting dello stato del lucchetto aperto/chiuso;
-	\item \texttt{bool isPadlockDetected()} : serve a sapere se il giocatore ha trovato il lucchetto, cioè la distanza giusta dal sensore;
-	\item \texttt{void setPadlockDetected(bool padlockDetected)} : set dello stato del padlock trovato o no;
-	\item \texttt{void setCurrentDistance(int currentDistance)} : set della distanza del padlock da aprire;
-	\item \texttt{int getCurrentDistance()} : restituisce la distanza a cui si trova la mano;
-	\item \texttt{void setButtonPressed(bool buttonPressed)} : set dello stato del bottone, se premuto o no;
-	\item \texttt{ bool isButtonPressed()} : restituisce lo stato del bottone;
-	\item \texttt{void setNewLevel()} : crea il nuovo livello da giocare;
-	\item \texttt{uint8\_t getDelta()} : margine di errore come scarto;
-	\item \texttt{uint8\_t getLevel()} : restituisce il livello a cui si sta giocando;
-	\item \texttt{int getSecret()} : restituisce la distanza a cui si trova il lucchetto;
-	\item \texttt{void newRandomNumber(}) : genera un nuovo numero random;
-	\item \texttt{void setGameOver(bool gameOver)} : setta lo stato del gioco, cioè se è finito o no;
-	\item \texttt{bool isGameOver()} : restituisce lo stato del gioco, finito o no;
-	\item \texttt{void setDangerLevel (uint8\_t dangerLevel)} :  set del livello di pericolo nello stato di scasso;
-	\item \texttt{uint8\_t getDangerLevel()} : restituisce il livello di pericolo nello stato di scasso;
-	\item \texttt{void setLockpicking (bool state)} : set dello stato di scasso;
-	\item \texttt{bool isLockpicking()} : indica se ci si trova nello stato di scasso;
-	\item \texttt{void carousel(uint8\_t delay1, uint8\_t delay2)} : esegue un carosello temporizzato dei due LED a 12 pin.
-\end{itemize}
 
 
 

@@ -89,14 +89,14 @@ La piattaforma riceve messagi JSON dallo script lato client tramite richieste PO
 La modalità multiplayer di Jimmy Challenge in sostanza consiste in una applicazione web, quasi real-time, in cui i giocatori possono vedere, tramite l'apposita view, lo stato e l'avanzamento dell'avversario nel gioco.\\
 Per garantire massime performance e sicurezza sono state adottate queste tecnologie:
 \begin{itemize}
-	\item NGINX come web server;
-	\item PHP 7 come backend e motore delle parti dinamiche dell'applicazione e che implementa l'interfaccia RESTfull;
-	\item Javascript per elaborazione lato client;
-	\item Mysql per lo store degli account degli utenti;
-	\item Redis come staging area per i dati temporanei da condividere con tutti i subscriber;
-	\item JSON come modello per i messaggi scambiati;
-	\item HTTPS over TLS
-	\item token JWS (JSON Web Signature)
+	\item \textbf{NGINX} come web server;
+	\item \textbf{PHP 7} come backend e motore delle parti dinamiche dell'applicazione e che implementa l'interfaccia RESTfull;
+	\item \textbf{Javascript} per elaborazione lato client;
+	\item \textbf{MySQL} per lo store degli account degli utenti;
+	\item \textbf{Redis} come staging area per i dati temporanei da condividere con \textbf{tutti} i subscriber;
+	\item \textbf{JSON} come modello per i messaggi scambiati;
+	\item \textbf{HTTPS} over TLS
+	\item \textbf{JSON Web Signature} per i token JWS
 \end{itemize}
 Il monitor LCD visualizza alcune statistiche sulle risorse usate dal sistema:
 \begin{itemize}
