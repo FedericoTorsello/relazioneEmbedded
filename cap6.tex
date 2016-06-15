@@ -21,7 +21,7 @@ Per la descrizione del comportamento di ogni task, si è deciso di utilizzare le
 In sintesi i vari task sono istanziati definendo all'interno del \textit{body} del metodo \texttt{init(...)} ogni singolo \textit{behaviour}. Per farlo sono utilizzati: 
 \begin{itemize}
 	\item i metodi propri del task;
-	\item i metodi del Context \ref{sec:context} come mezzo di comunicazione tra i diversi task.
+	\item i metodi del Context \ref{sec:contextimpl} come mezzo di comunicazione tra i diversi task.
 \end{itemize}
 Questo ci ha permesso di avere più gradi di libertà nella definizione del comportamento dei task e quindi del codice da eseguire. In quest'ottica non vi è necessità di creare una classe per ogni singolo comportamento, ma basta istanziare due o più volte la classe e definire diversi body.
 
@@ -79,11 +79,11 @@ Sintassi accettate dal compilatore di Arduino:
 	\item è possibile creare una classe "generica" che può avere più istanze a cui assegnare più \textit{behaviour};
 	\item si evita di dover creare per ogni comportamento una classe specifica;
 	\item codice modulare, (diverse istanze dello stesso oggetto possono avere diversi body);
-	\item definizione del comportamento direttamente dal file \texttt{*.ino}.
+	\item definizione del comportamento direttamente dal file \texttt{JimmyChallenge.ino}.
 \end{itemize}
 
 \subsubsection{Contro}
-Utilizzare le lambda expression ci ha portati ad un \textit{trade-off}, cioè siamo stati costretti a rinunciare parzialmente all'\textit{information hiding} della programmazione OO al fine di ottenere i vantaggi sopra citati. Questa rinuncia è legata al fatto che non è stato possibile passare oggetti come chiusura a causa di alcuni vincoli del linguaggio usato da Arduino.
+Utilizzare le lambda expression ci ha portati ad un \textbf{\textit{trade-off}}, cioè siamo stati costretti a rinunciare \underline{parzialmente} all'\textit{information hiding} della programmazione OO al fine di ottenere i vantaggi sopra citati. Questa rinuncia è legata al fatto che non è stato possibile passare oggetti come chiusura a causa di alcuni vincoli del linguaggio Wiring usato da Arduino.
 
 L'unico modo per utilizzare i metodi richiamati all'interno di queste particolari funzioni è stato dichiarare tali metodi come \texttt{public}.
 
@@ -94,22 +94,36 @@ L'unico modo per utilizzare i metodi richiamati all'interno di queste particolar
 	\caption{Generalizzazione dei task}
 \end{figure}
 
+\section{Astrazione di task}
+\subsection{Task.h}
+\subsubsection{Metodi}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.5]{img/UML/CollaborationDiagram/Task.png}
+	\caption{Collaboration Diagram - Task}
+\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.45]{img/UML/InheritanceDiagram/Task.png}
+	\caption{Inheritance Diagram - Task}
+\end{figure}
+
 \clearpage
 \section{Elenco dei Task sviluppati:}
 \begin{enumerate}
-	\item SonarTask
-	\item ButtonTask
-	\item BuzzerTask
-	\item LedTask
-	\item LedPwmTask
-	\item LedRgbTask
+	\item SonarTask;
+	\item ButtonTask;
+	\item BuzzerTask;
+	\item LedTask;
+	\item LedPwmTask;
+	\item LedRgbTask.
 \end{enumerate}
 
 \subsection{SonarTask}
 È il task più importante del progetto in quanto:
 \begin{itemize}
 	\item permette l'interazione utente-sistema sfruttando il sensore ad ultrasuoni;
-	\item aggiorna la \texttt{currentDistance} del Context (\ref{sec:context});
+	\item aggiorna la \texttt{currentDistance} del Context (\ref{sec:contextimpl});
 	\item in modo indiretto può variare l'evoluzione del sistema
 \end{itemize}
 Nella classe SonarTask viene definito il metodo \texttt{playLevel()} in cui:
@@ -137,7 +151,7 @@ Per la rilevazione della distanza della mano dal sensore è stata utilizzata la 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[scale=.35]{img/UML/sonartask.png}
-	\caption{Diagramma di attività - playLevel()}
+	\caption{Diagramma di attività - metodo \texttt{playLevel(\dots)}}
 \end{figure}
 
 \newpage

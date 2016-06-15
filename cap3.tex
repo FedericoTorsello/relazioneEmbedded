@@ -1,18 +1,18 @@
 \chapter{Giocare a Jimmy Challenge}
 \section{Giocare con la mano e con i sensi}
-L'obiettivo del giocatore è trovare la giusta posizione dei pistoncini e quindi scassinare il lucchetto nel minor tempo possibile. Questo gioco è sia un multiplayer \textbf{online} che un single game \textbf{offline}.
+L'obiettivo del giocatore è trovare la giusta posizione dei pistoncini e quindi scassinare il lucchetto nel minor tempo possibile. Questo gioco è sia un \textbf{multiplayer online} che un \textbf{single game offline}.
 
 La posizione dei pistoncini viene assegnata in modo random ad ogni nuovo livello e rimane fissa fino al suo superamento.
 
 Per trovare la posizione attuale dei pistoncini al giocatore basta muovere la mano orizzontalmente in direzione del sensore ad ultrasuoni. (La rilevazione del lucchetto è spiegata più avanti).
 
-Durante le varie fasi di gioco l'utente ha la possibilità di rendersi conto dell'evoluzione del gioco ascoltando i suoni emessi dal buzzer e/o guardando i colori dei LED.
+Durante le varie fasi di gioco l'utente ha la possibilità di rendersi conto dell'evoluzione del gioco \textbf{ascoltando i suoni} emessi dal buzzer e/o \textbf{guardando i colori} dei LED.
 
 \subsection{Significato dei suoni e dei colori}
 \begin{itemize}
 	\item All'avvio del gioco:
 	\begin{itemize}
-		\item i LED a 12 pin giallo e rosso fanno un carosello;
+		\item i LED a 12 pin giallo e rosso fanno un carosello, cioè si alternano nell'accensione/spegnimento;
 		\item il LED verde e il buzzer si comportano come quando la corretta posizione del pistoncini non è stata trovata.
 	\end{itemize}
 \end{itemize}
@@ -30,7 +30,7 @@ Durante le varie fasi di gioco l'utente ha la possibilità di rendersi conto del
 	\item Quando si è nell'area della posizione corretta del pistoncino:
 	\begin{itemize}
 		\item il LED verde emette una luce fissa;
-		\item il LED RGB continuerà ad emettere una luce continua blu chiaro, ma solo fino a quando non entrerà nello stato di scasso;
+		\item il LED RGB continuerà ad emettere una luce continua blu chiaro, ma solo fino a quando non entrerà nello \textbf{stato di scasso};
 		\item il buzzer suona due note meno freneticamente.
 	\end{itemize}
 \end{itemize}
@@ -46,19 +46,19 @@ Per forzare il lucchetto è sufficiente tenere una mano davanti al sensore ad ul
 	\item \textbf{Non} si supera il livello:
 	\begin{itemize}
 			\item Se la mano viene spostata dall'area corretta del pistoncino troppo presto, per esempio non si è ancora nello stato di scasso
-			\item Se si rimane troppo tempo nella fase di scasso (il grimaldello è stato "rotto").
+			\item Se si rimane troppo tempo nella stato di scasso (il grimaldello è stato "rotto").
 	\end{itemize}
 \end{itemize}
 
 \begin{itemize}
 	\item Si può superare il livello:
 	\begin{itemize}
-			\item Se la mano resta fissa nella posizione in cui si trova il pistoncino, rispettando il tempo dello \textbf{stato di scasso} e poi la si agita sempre nell'area del lucchetto per simulare il processo di apertura.
+			\item Se la mano resta fissa nella posizione in cui si trova il pistoncino, rispettando il tempo dello \textbf{stato di scasso} (\ref{sec:statodiscasso}) e poi la si agita sempre nell'area del lucchetto per simulare il processo di apertura.
 	\end{itemize}
 \end{itemize}
 
 \clearpage
-\subsection{Stato di scasso}
+\subsection{Stato di scasso}\label{sec:statodiscasso}
 Se si rispetta il tempo nello stato di scasso e quindi si apre il lucchetto, si supera il livello.
 
 Per indicare lo stato di scasso si è utilizzato un LED RGB. 
@@ -66,10 +66,10 @@ Per indicare lo stato di scasso si è utilizzato un LED RGB.
 	\item Ogni colore ha un significato:
 	\begin{itemize}
 		\item blu scuro: si sta iniziando a scassinare il lucchetto
-		\item verde: il lucchetto è scassinato.
-			\subitem NB: per passare al livello successivo si deve togliere la mano e riposizionarla nell'area del pistoncino [come se si girasse la "\textit{chiave}"].
-		\item arancio: attenzione, se non si toglie la mano ora si rischia di rompere il grimaldello
-		\item giallo: pericolo di rottura ancora più elevato
+		\item verde: il pistoncino è scassinato;
+			\subitem NB: per passare al livello successivo si deve togliere la mano e riposizionarla nell'area del pistoncino [come se si girasse il "\textit{grimaldello}"].
+		\item arancio: attenzione, se non si toglie la mano ora si rischia di rompere il grimaldello;
+		\item giallo: pericolo di rottura ancora più elevato;
 		\item rosso: il grimaldello è stato rotto, quindi il livello deve essere ricominciato.
-	\end{itemize}
+	\end{itemize}	
 \end{itemize}

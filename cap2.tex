@@ -1,12 +1,21 @@
 \chapter{Progettazione di un sistema Embedded}
 \section{Analisi dei requisiti}
 \subsection{Requisiti funzionali}
-Il sistema realizzato deve permettere ad uno o più giocatori di competere per sbloccare dei lucchetti. Ad ogni lucchetto sbloccato si supera il livello fino a quando i livelli non terminano e il gioco si dice finito. Durante il gioco sono presenti delle penalità e dei bonus.
+Il sistema realizzato deve permettere ad uno o più giocatori di competere per sbloccare dei lucchetti \textit{"invisibili"} agendo come degli scassinatori, utilizzando la propria mano come un grimaldello. 
+
+Ogni volta che un pistoncino viene sbloccato si supera un livello fino a quando i livelli non terminano, il lucchetto è sbloccato e il gioco si dice finito. Durante il gioco sono presenti delle penalità (ad ogni livello la difficoltà aumenta) e dei bonus (è possibile sapere dove si trova il pistoncino).
 
 \subsection{Requisiti non funzionali}
-Le performance utili per la buona riuscita del progetto a cui non si può rinunciare riguardano la rilevazione della distanza e l'invio dei feedback locali/remoti.
-Il tempo gioca un ruolo importante in questo progetto, quindi si devono evitare inutili ritardi nella rilevazione ed invio delle informazioni.
-In quanto è possibile giocare online sono stati presi alcuni accorgimenti al fine di proteggere il sistema e gli utenti che lo utilizzano.
+Le performance utili a cui non si può rinunciare per la buona riuscita del progetto  riguardano
+\begin{itemize}
+	\item la corretta rilevazione della distanza da parte del sensore
+	\item l'invio dei feedback locali/remoti (suoni, luci, messaggi su seriale);
+	\item la corretta gestione del tempo.
+\end{itemize}
+
+Il \textbf{tempo} gioca un ruolo importante in questo progetto, quindi si devono evitare inutili ritardi nella rilevazione ed invio delle informazioni.
+
+Il gioco è giocabile online, quindi alcuni accorgimenti particolari devono proteggere il sistema e gli utenti che lo utilizzano.
 
 \clearpage
 \section{Casi d'uso}
@@ -58,7 +67,7 @@ Il sistema si suddivide in più parti:
 \subsection{Modellazione della parte fisica - lato client}
 Dal punto di vista fisico, si ha un Arduino UNO:
 \begin{itemize}
-	\item connesso ad una breadboard e a dei componenti hardware attraverso i sui pin digitali
+	\item connesso ad una breadboard e a dei componenti hardware attraverso i sui pin digitali;
 	\item connesso ad un PC mediante la porta USB (da cui riceve l'alimentazione a 5v). 
 \end{itemize}
 Ogni componente della breadboard ha un proprio impiego e può essere distinto in \textbf{sensore} ed \textbf{attuatore} secondo la visione di \textit{sistema reattivo}.
@@ -81,25 +90,32 @@ Per realizzare il comportamento dinamico del progetto, nella parte software si �
 	\begin{quote}
 		\textbf{Decomposizione in task}: principio di progettazione importante, rende modulare il sistema in quanto:
 		\begin{itemize}
-			\item ogni modulo è rappresentato da un task (compito da eseguire)
-			\item un task può essere decomposto in sotto-task in modo ricorsivo o un task complesso può essere definito come composizione di sotto-task più semplici
+			\item ogni modulo è rappresentato da un task (compito da eseguire);
+			\item un task può essere decomposto in sotto-task in modo ricorsivo o un task complesso può essere definito come composizione di sotto-task più semplici.
 		\end{itemize}
 		Vantaggi:
 		\begin{itemize}
-			\item separation of concerns
-			\item l'utilizzo di singoli moduli per una migliore comprensibilità del comportamento
-			\item debugging semplificato
-			\item supporto alla modificabilità, all'estensione ed al riuso del codice
+			\item \textit{separation of concerns};
+			\item l'utilizzo di singoli moduli per una migliore comprensibilità del comportamento;
+			\item debugging semplificato;
+			\item supporto alla modificabilità, all'estensione ed al riuso del codice.
 		\end{itemize}
-	\end{quote}	
-Si è fatto uso della programmazione ad oggetti, modellando ogni task (es. \textit{LedTask}, \textit{BuzzerTask}, etc.) come una classe separata che estende la classe base \textit{Task}. In ogni \textit{task} viene fatto l'\textbf{\textit{inject} del comportamento} da avere.\\
-La simulazione della sensazione di lavorare su un sistema multi-tasking e cooperativo è realizzata tramite una schedulazione \textbf{round-robin} dei vari task. È stato necessario quindi introdurre uno \textit{Scheduler} per richiamare ciclicamente le funzioni \textit{tick()} dei vari task.
+	\end{quote}
 
+L'utilizzo della programmazione ad oggetti ha permesso di modellare ogni task (es. \textit{LedTask}, \textit{BuzzerTask}, etc.) come una classe separata che estende la classe base \textit{Task}. 
+
+Come scelta progettuale nel metodo \texttt{setup()} del file JimmyChallenge.ino all'interno del corpo di ogni \textit{task} viene fatto l'\textbf{\textit{inject} del comportamento} che questo deve avere.
+
+La simulazione di un sistema multi-tasking cooperativo necessario è realizzata dalla schedulazione \textbf{round-robin} dei vari task. È stato quindi necessario introdurre uno \textit{Scheduler} per richiamare ciclicamente i metodi \texttt{tick()} dei vari task.
+
+Nel dettaglio:
 \begin{itemize}	
 	\item si è fatto uso della programmazione Object-Oriented per rendere la struttura del codice ingegneristica, lineare e scalabile;
 	\item si sono utilizzate le lambda expression per definire il comportamento di ogni task.
 \end{itemize}
-La comunicazione tra i task avviene attraverso variabili condivise. Queste variabili appartengono alla classe Context.\\
+
+La comunicazione tra i task avviene attraverso variabili condivise che appartengono alla classe Context (\ref{sec:contextimpl}).
+
 Per quanto riguarda la connessione USB, per scelta progettuale, tutti i dati inviati dall'Arduino al PC sono formattati in \textbf{JSON}.
 
 \subsection{Modellazione della parte fisica - lato server}
@@ -111,10 +127,10 @@ A lato server si ha un Odroid C2 (prodotto da \href{http://www.hardkernel.com/ma
 	\item Gigabit Ethernet;
 	\item 4 x USB 2.0.
 \end{itemize}
-Il dispostivo è collegato in rete e funge da server per abilitare la modalità multiplayer di Jimmy Challenge dalla parte client tramite uno script Python in esecuzione sul dispositivo collegato all'Arduino.\\
-In un'ottica più orientata all'hardware, al server è collegato un LCD 16x2 che mostra alcune statistiche sullo stato attuale dei servizi e delle risorse.
+Il dispositivo è collegato in rete e funge da server per abilitare la modalità multiplayer di Jimmy Challenge dalla parte client tramite uno script Python in esecuzione sul dispositivo collegato all'Arduino.
 
-Lo schema \ref{img:server} presenta il monitor LCD collegato ai pin GPIO del Odroid con un potenziometro per l'aggiustamento del contrasto.\\
+In un'ottica più orientata all'hardware, al server è collegato un LCD 16x2 che mostra alcune \textbf{statistiche sullo stato} attuale dei servizi e delle risorse. Lo schema \ref{img:server} presenta il monitor LCD collegato ai pin GPIO del Odroid con un potenziometro per l'aggiustamento del contrasto.
+
 Al fine di collegare in rete il server si è aggiunto un modulo WiFi (TP-Link TL-WN722N) tramite una porta USB.
 
 \subsection{Modellazione della parte logica - lato server}
@@ -124,8 +140,10 @@ Per permettere agli utenti di giocare tra di loro online, il server mette a disp
 	\item una chat globale in cui poter invitare gli utenti a giocare;
 	\item una view con lo stato del gioco.
 \end{itemize}
-La piattaforma riceve messaggi JSON dallo script lato client tramite richieste POST ad un'interfaccia PHP RESTful. Una volta che le informazioni sono inviate al server, sono elaborate e pubblicate ai vari subscriber tramite Server-Sent Events (sempre utilizzando JSON come modello).\\
-La modalità multiplayer di Jimmy Challenge in sostanza consiste in una applicazione web, quasi real-time, in cui i giocatori possono vedere, tramite l'apposita view, lo stato e l'avanzamento dell'avversario nel gioco.\\
+La piattaforma riceve messaggi JSON dallo script lato client tramite richieste POST ad un'interfaccia PHP RESTful. Una volta che le informazioni sono inviate al server, sono elaborate e pubblicate ai vari subscriber tramite Server-Sent Events (sempre utilizzando JSON come modello).
+
+La \textbf{modalità multiplayer} di Jimmy Challenge in sostanza consiste in una applicazione web, quasi real-time, in cui i giocatori possono vedere, tramite l'apposita \textit{view}, lo stato e l'avanzamento dell'avversario nel gioco.
+
 Per garantire massime performance e sicurezza sono state adottate queste tecnologie:
 \begin{itemize}
 	\item \textbf{NGINX} come web server;
@@ -134,8 +152,8 @@ Per garantire massime performance e sicurezza sono state adottate queste tecnolo
 	\item \textbf{MySQL} per lo store degli account degli utenti;
 	\item \textbf{Redis} come staging area per i dati temporanei da condividere con tutti i subscriber;
 	\item \textbf{JSON} come modello per i messaggi scambiati;
-	\item \textbf{HTTPS} over TLS
-	\item \textbf{JSON Web Signature} per i token JWS
+	\item \textbf{HTTPS} over TLS;
+	\item \textbf{JSON Web Signature} per i token JWS.
 \end{itemize}
 Il monitor LCD visualizza alcune statistiche sulle risorse usate dal sistema:
 \begin{itemize}
@@ -162,7 +180,7 @@ Il sistema si suddivide in più aree:
 \section{Analysis}
 Potenzialità software di Arduino UNO sfruttate:
 \begin{itemize}
-	\item programmazione Object-Oriented con \href{https://it.wikipedia.org/wiki/Wiring}{Wiring \footnote{Wiring - linguaggio di programmazione semplice e intuitivo derivato dal C e dal C++}}.
+	\item programmazione Object-Oriented con \href{https://it.wikipedia.org/wiki/Wiring}{Wiring\footnote{Wiring - linguaggio di programmazione semplice e intuitivo derivato dal C e dal C++}}.
 	\begin{itemize}
 		\item modularizzazione in classi;
 		\item utilizzo di oggetti e metodi;

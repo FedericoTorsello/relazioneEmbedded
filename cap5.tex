@@ -180,7 +180,7 @@ Classe che permette di gestire il multiplexer e quindi le sue uscite digitali. I
 \newpage
 \subsection{MessageService.cpp, MessageService.h}
 Questa classe permette di gestire l'invio e la ricezione di messaggi formattati in JSON attraverso la seriale.
-Per codificare/decodificare i messaggi JSON è stata utilizzata la libreria \href{https://github.com/bblanchon/ArduinoJson}{ArduinoJson}\ref{sec:arduinojason}, facilitando le operazioni di I/O su seriale.
+Per codificare/decodificare i messaggi JSON è stata utilizzata la libreria \href{https://github.com/bblanchon/ArduinoJson}{ArduinoJson} (\ref{sec:arduinojason}), facilitando le operazioni di I/O su seriale.
 \subsubsection{Metodi}
 \begin{itemize}
 	\item \texttt{public void init(const int, const String \&)}: inizializza la seriale e stampa un messaggio di inizalizzazione;
@@ -209,8 +209,22 @@ Lo Scheduler è \textbf{cooperativo} in quanto una volta selezionato un task, qu
 
 Lo scheduling è a \textbf{priorità statica}, in quanto ad ogni task viene assegnata una priorità che non cambia durante l'esecuzione. La si può considerare come definita implicitamente dall'ordine di inserimento dei task nella \textit{task list}.
 
-\section{Context.h}\label{sec:contextimpl}
+\subsection{Scheduler.cpp, Scheduler.h}
+\subsubsection{Metodi}
+\begin{itemize}
+	\item \texttt{public void init(int)}: inizializza il base period dello Scheduler;
+	\item \texttt{public virtual bool addTask(Task *)}: aggiunge il task alla lista dei task da eseguire;
+	\item \texttt{public virtual void schedule()}: pianifica l'esecuzione dei vari task, eseguendoli uno alla volta. Nel caso in cui un task non sia abilitato, viene semplicemente ignorato (non eseguendo il suo tick) e quindi si passa immediatamente al successivo della lista.
+\end{itemize}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.5]{img/UML/CollaborationDiagram/Scheduler.png}
+	\caption{Collaboration Diagram - Scheduler}
+\end{figure}
+
+\section{Context}\label{sec:contextimpl}
 La classe Context contiene tutti le variabili di stato del programma. I metodi al suo interno sono accessibili da tutti i task in modo da far evolvere il sistema; di seguito la lista di tutti i metodi e del loro significato.
+\subsection{Context.h}
 \subsubsection{Metodi}
 \begin{itemize}
 	\item \texttt{bool isPadlockOpen(}): serve a sapere se il giocatore ha aperto il lucchetto;
@@ -220,7 +234,7 @@ La classe Context contiene tutti le variabili di stato del programma. I metodi a
 	\item \texttt{void setCurrentDistance(int currentDistance)}: set della distanza del padlock da aprire;
 	\item \texttt{int getCurrentDistance()}: restituisce la distanza a cui si trova la mano;
 	\item \texttt{void setButtonPressed(bool buttonPressed)}: set dello stato del bottone, se premuto o no;
-	\item \texttt{ bool isButtonPressed()}: restituisce lo stato del bottone;
+	\item \texttt{bool isButtonPressed()}: restituisce lo stato del bottone;
 	\item \texttt{void setNewLevel()}: crea il nuovo livello da giocare;
 	\item \texttt{uint8\_t getDelta()}: margine di errore della posizione del pistoncino;
 	\item \texttt{uint8\_t getLevel()}: restituisce il livello attuale;
@@ -240,20 +254,6 @@ La classe Context contiene tutti le variabili di stato del programma. I metodi a
 	\caption{Collaboration Diagram - Context}
 \end{figure}
 
-\newpage
-\subsection{Scheduler.cpp, Scheduler.h}
-\subsubsection{Metodi}
-\begin{itemize}
-	\item \texttt{public void init(int)}: inizializza il base period dello Scheduler;
-	\item \texttt{public virtual bool addTask(Task *)}: aggiunge il task alla lista dei task da eseguire;
-	\item \texttt{public virtual void schedule()}: pianifica l'esecuzione dei vari task, eseguendoli uno alla volta. Nel caso in cui un task non sia abilitato, viene semplicemente ignorato (non eseguendo il suo tick) e quindi si passa immediatamente al successivo della lista.
-\end{itemize}
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[scale=.5]{img/UML/CollaborationDiagram/Scheduler.png}
-	\caption{Collaboration Diagram - Scheduler}
-\end{figure}
-
 \subsection{Timer.h, Timer.cpp}
 \subsubsection{Metodi}
 \begin{itemize}
@@ -264,18 +264,4 @@ La classe Context contiene tutti le variabili di stato del programma. I metodi a
 	\centering
 	\includegraphics[scale=.5]{img/UML/CollaborationDiagram/Timer.png}
 	\caption{Collaboration Diagram - Timer}
-\end{figure}
-
-\newpage
-\subsection{Task.h}
-\subsubsection{Metodi}
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[scale=.5]{img/UML/CollaborationDiagram/Task.png}
-	\caption{Collaboration Diagram - Task}
-\end{figure}
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[scale=.35]{img/UML/InheritanceDiagram/Task.png}
-	\caption{Inheritance Diagram - Task}
 \end{figure}
