@@ -1,3 +1,3 @@
 # relazioneEmbedded
 
-(main.pdf)[doc.pdf]
+[PDF](main.pdf)
