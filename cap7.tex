@@ -1,6 +1,6 @@
 \section{Networking e Sicurezza}
 
-Il mondo embedded e IoT sta avendo un forte sviluppo in questi anni grazie alla disponibilità di dispositivi dal rapporto prestazioni/prezzo vantaggioso ha creato un grande bacino di utenza di esperti o semplici neofiti interessati al mondo dell'elettronica/informatica dedicata. Un effetto positivo di questa evoluzione è lo sviluppo di librerie open-source e di sistemi software orientati all'IoT.
+Il mondo embedded e IoT in questi anni sta avendo un forte sviluppo, grazie alla disponibilità di dispositivi dal rapporto prestazioni/prezzo vantaggioso, e ha creato un grande bacino di utenza di esperti, o semplici neofiti, interessati al mondo dell'elettronica/informatica dedicata. Un effetto positivo di questa evoluzione è lo sviluppo di librerie open-source e di sistemi software orientati all'IoT.
 
 Questo trend ha creato un mercato sempre più vasto di produttori di dispositivi più performanti, economici e dalle dimensioni ridotte (perfetti per realizzazioni embedded).
 A causa di questo sviluppo, per certi versi incontrollato, "tutto" è virtualmente collegato/collegabile \textit{online} e sembra essere passata in secondo piano la progettazione di hardware e software che tiene conto della \textbf{sicurezza dei sistemi}. I primi attacchi mirati a queste tecnologie hanno avuto facilità di esecuzione e una rapidissima diffusione\footnote{Breve lista di attacchi a sistemi IoT nel 2015 \url{http://tinyurl.com/honlko2}.}.
@@ -41,7 +41,7 @@ Oltre all'installazione e alla configurazione dei software sono stati configurat
 
 \subsection{NGINX e HTTPS}
 \textbf{NGINX} è un web server orientato alle performance, al ridotto consumo di risorse e alla facilità di configurazione.
-In un sistema come l'Odroid con potenza computazionale ridotta (rispetto ai classici server) l'utilizzo di applicativi con ridotto consumo di risorse garantisce una maggiore reattività del sistema e un migliore risulto agli occhi dell'utente.
+In un sistema come l'Odroid con potenza computazionale ridotta (rispetto ai classici server) l'utilizzo di applicativi con ridotto consumo di risorse garantisce una maggiore reattività del sistema e un migliore risultato agli occhi dell'utente.
 
 La configurazione di NGINX prende in considerazione tutti i maggiori problemi legati all'esposizione di un sito e di un web server in rete: buffer overflow, DDoS, bruteforcing, sniffing, etc. e cerca di mitigare o prevenire ogni tipo di attacco senza generare intralcio o rallentamenti all'utilizzo standard del web server.\\
 Grazie a \textit{Cerbot} è possibile ottenere certificati SSL/TLS gratuitamente e garantire un canale di comunicazione protetto tra client e server.\\
@@ -138,7 +138,7 @@ Per poter utilizzare lo script è necessario autenticarsi e ricevere il token JW
 \subsubsection{Pyserial}
 La libreria \textbf{pyserial} consente la connessione all'Arduino tramite porta seriale e la lettura dei messaggi in maniera continua grazie all'utilizzo di un thread che agisce da produttore di messaggi per l'intero script.
 
-L'elaborazione di questi messaggi viene effettuata da un routine che dopo aver \textit{parsato} il messaggio lo instrada al corretto destinatario. Se si deve inviare un messaggio al server, viene composto il messaggio in JSON e viene inviato tramite una richiesta HTTP POST al server.
+L'elaborazione di questi messaggi viene effettuata da una routine che dopo aver decodificato il messaggio lo instrada al corretto destinatario. Se si deve inviare un messaggio al server, viene composto il messaggio in JSON e viene inviato tramite una richiesta HTTP POST al server.
 
 \subsubsection{Asyncio}
 A parte il thread creato per la lettura dei messaggi da Arduino, le altre \textit{routine}, o meglio, \textit{\textbf{coroutine}} sono eseguite all'interno dell'event loop di asyncio. 
@@ -154,4 +154,4 @@ Questo tipo di approccio:
 	\item aumentare le performance dell'applicazione.
 \end{itemize}
 Questo risultato si ottiene perché la maggior parte dell'esecuzione dello script è basata sull'invio di dati al server.\\\\
-L'obiettivo di rendere completamente asincrono il codice ed eliminare il thread della libreria pyserial teoricamente sarebbe possibile utilizzando delle API per asyncio, ma al momento dello sviluppo del progetto queste soluzioni sono incomplete e non affidabili, quindi non sono state scartat
+L'obiettivo di rendere completamente asincrono il codice ed eliminare il thread della libreria \textit{pyserial} sarebbe possibile utilizzando delle API per \textit{asyncio} che sono però ancora incomplete ed non affidabili.

@@ -164,7 +164,7 @@ Nel dettaglio, il controllo viene eseguito istanziando tre oggetti \texttt{LedPw
 
 \newpage
 \subsection{Multiplexer.cpp, Multiplexer.h}
-Classe che permette di gestire il multiplexer e quindi le sue uscite digitali. In questo progetto il multiplexer è strettamente legato ai LED a 12 pin regolando l'accensione/spegnimento di ogni LED interno. La classe è impostate per utilizzare la tabela di verità del multiplexer CD4067B.
+Classe che permette di gestire il multiplexer e quindi le sue uscite digitali. In questo progetto il multiplexer è strettamente legato ai LED a 12 pin regolando l'accensione/spegnimento di ogni LED interno. La classe è impostate per utilizzare la tabella di verità del multiplexer CD4067B.
 \subsubsection{Metodi}
 \begin{itemize}
 	\item \texttt{public void switchOn(int)}: abilita il pin in uscita del multiplexer. Nel progetto è stato utile per visualizzare il livello a cui si sta giocando o il carosello sui LED a 12 pin;
@@ -183,7 +183,7 @@ Questa classe permette di gestire l'invio e la ricezione di messaggi formattati 
 Per codificare/decodificare i messaggi JSON è stata utilizzata la libreria \href{https://github.com/bblanchon/ArduinoJson}{ArduinoJson}\ref{sec:arduinojason}, facilitando le operazioni di I/O su seriale.
 \subsubsection{Metodi}
 \begin{itemize}
-	\item \texttt{public void init(const int, const String \&)}: inizializza la seriale e stampa un messagio di inizalizzazione;
+	\item \texttt{public void init(const int, const String \&)}: inizializza la seriale e stampa un messaggio di inizalizzazione;
 	\item \texttt{public void setMessage(String)}  quando un messaggio viene letto, è parsato, se valido viene inviato un \textit{ACK};
 	\item \texttt{public void errorMsg()}: invia un messaggio di errore;
 	\item \texttt{public void ackMsg(const String)} : invio di un \textit{ACK};

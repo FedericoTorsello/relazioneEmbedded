@@ -124,7 +124,7 @@ Per permettere agli utenti di giocare tra di loro online, il server mette a disp
 	\item una chat globale in cui poter invitare gli utenti a giocare;
 	\item una view con lo stato del gioco.
 \end{itemize}
-La piattaforma riceve messagi JSON dallo script lato client tramite richieste POST ad un'interfaccia PHP RESTful. Una volta che le informazioni sono inviate al server, sono elaborate e pubblicate ai vari subscriber tramite Server-Sent Events (sempre utilizzando JSON come modello).\\
+La piattaforma riceve messaggi JSON dallo script lato client tramite richieste POST ad un'interfaccia PHP RESTful. Una volta che le informazioni sono inviate al server, sono elaborate e pubblicate ai vari subscriber tramite Server-Sent Events (sempre utilizzando JSON come modello).\\
 La modalità multiplayer di Jimmy Challenge in sostanza consiste in una applicazione web, quasi real-time, in cui i giocatori possono vedere, tramite l'apposita view, lo stato e l'avanzamento dell'avversario nel gioco.\\
 Per garantire massime performance e sicurezza sono state adottate queste tecnologie:
 \begin{itemize}
@@ -145,7 +145,7 @@ Il monitor LCD visualizza alcune statistiche sulle risorse usate dal sistema:
 	\item Indirizzo IP interno;
 	\item Traffico in upload e in download.
 \end{itemize}
-I dati stampati sullo schermo LCD sono collezionati e formattati tramite uno script python che utilizza un wrapper del porting di \href{https://github.com/hardkernel/WiringPi2-Python}{WiringPi} per i dispotivi Odroid.
+I dati stampati sullo schermo LCD sono collezionati e formattati tramite uno script python che utilizza un wrapper del porting di \href{https://github.com/hardkernel/WiringPi2-Python}{WiringPi} per i dispositivi Odroid.
 
 \section{Design}
 Il sistema si suddivide in più aree:
