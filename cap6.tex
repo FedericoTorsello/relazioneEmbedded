@@ -1,7 +1,7 @@
 \chapter{Multi-Tasking}
 
 \section{Task}
-I task rappresentano le azioni da eseguite concorrentemente nel sistema, pianificate dallo Scheduler. 
+I task rappresentano le azioni da eseguire concorrentemente nel sistema, pianificate dallo Scheduler. 
 
 \begin{itemize}
 	\item Dal \textbf{punto di vista del progettista}:
@@ -87,29 +87,14 @@ Utilizzare le lambda expression ci ha portati ad un \textit{trade-off}, cioè si
 
 L'unico modo per utilizzare i metodi richiamati all'interno di queste particolari funzioni è stato dichiarare tali metodi come \texttt{public}.
 
-\newpage
 \subsection{Generalizzazione del funzionamento di un task}
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[scale=.60]{img/task_generic.png}
+	\includegraphics[scale=.40]{img/task_generic.png}
 	\caption{Generalizzazione dei task}
 \end{figure}
 
-\newpage
-\section{Scheduler}
-Lo Scheduler coordina e fa cooperare i task del sistema.
-
-Al suo interno è presente il vettore \texttt{taskList[...]} in cui sono aggiunti i task da eseguire grazie al metodo \texttt{bool addTask(Task* task)}.
-
-Nel caso in cui nello Scheduler non ci fossero task o fossero stati tutti bloccati, il sistema rimarrebbe apparentemente fermo (anche se in realtà il microcontrollore continuerebbe ad eseguire il suo \texttt{void loop()}).
-
-Lo Scheduler è \textbf{cooperativo} in quanto una volta selezionato un task, questo viene eseguito fino al suo completamento (\textit{run-to-completion}). Ad ogni tick della FSM vengono eseguite atomicamente le azioni associate al nuovo stato.
-
-Lo scheduling è a \textbf{priorità statica}, in quanto ad ogni task viene assegnata una priorità che non cambia durante l'esecuzione. La si può considerare come definita implicitamente dall'ordine di inserimento dei task nella \textit{task list}.
-
-\section{Context}\label{sec:contextgeneric}
-La classe Context contiene tutti le variabili di stato del programma. I metodi al suo interno sono accessibili da tutti i task in modo da far evolvere il sistema; di seguito la lista di tutti i metodi e del loro significato.
-
+\clearpage
 \section{Elenco dei Task sviluppati:}
 \begin{enumerate}
 	\item SonarTask
@@ -127,7 +112,7 @@ La classe Context contiene tutti le variabili di stato del programma. I metodi a
 	\item aggiorna la \texttt{currentDistance} del Context (\ref{sec:context});
 	\item in modo indiretto può variare l'evoluzione del sistema
 \end{itemize}
-Nella classe SonarTask viene definito il metodo \texttt{private playLevel()} in cui:
+Nella classe SonarTask viene definito il metodo \texttt{playLevel()} in cui:
 \begin{itemize}
 	\item si legge la currentDistance dal sonar;
 	\item si setta tale currentDistance nel Context;
@@ -160,11 +145,11 @@ Per la rilevazione della distanza della mano dal sensore è stata utilizzata la 
 Questo task controlla se è avvenuta la pressione del \textit{button}.
 Finché il gioco non è finito è possibile stampare su terminale un messaggio che indica la posizione del lucchetto. 
 
-Se il gioco è finito, ma il bottone viene comunque premuto, si avvia una divertente \textbf{\textit{easter egg}} legata al BuzzerTask e ad un famoso gioco degli anni '80\dots
+Se il gioco è finito, ma il bottone viene comunque premuto, si avvia un divertente \textbf{\textit{easter egg}} legata al BuzzerTask e ad un famoso gioco degli anni '80\dots
 
 
 \subsection{BuzzerTask}
-Questo task controlla i suoni che il \textit{buzzer} deve emettere attraverso il metodo \texttt{buzzerT0->buzzer->playSound(<num>)}
+Questo task controlla i suoni che il \textit{buzzer} deve emettere attraverso il metodo \texttt{playSound(<num>)}
 
 \begin{itemize}
 	\item Se il gioco non è finito e il lucchetto non è ancora stato trovato, viene emesso il suono 0;
@@ -183,8 +168,8 @@ Questo task controlla l'accensione e lo spegnimento del LED verde.
 \subsection{LedPwmTask}
 Questo task gestisce il LED verde utilizzando il pin PWM grazie ai seguenti metodi:
 \begin{itemize}
-	\item \texttt{ledPwmT0->ledPwm->setIntensity(<num>)} per gestire l'intensità luminosa (anche temporizzata) del LED;
-	\item \texttt{ledPwmT0->ledPwm->switchOff()} per spegnere immediatamente il LED.
+	\item \texttt{setIntensity(<num>)} per gestire l'intensità luminosa (anche temporizzata) del LED;
+	\item \texttt{switchOff()} per spegnere immediatamente il LED.
 \end{itemize}
 Analizzando questo task nel dettaglio:
 \begin{itemize}
@@ -211,12 +196,12 @@ Funzionamento:
 \begin{itemize}
 	\item Finché il gioco non è finito:
 	\begin{itemize}
-		\item Se si è in fase di scasso, si imposta un colore nel costrutto swhitch-case in base al numero intero di \texttt{pContext->getDangerLevel()}
+		\item Se si è in fase di scasso, si imposta un colore nel costrutto swhitch-case in base al livello di pericolo di \texttt{getDangerLevel()}
 			\item Nel dettaglio:
 			\begin{itemize}
 				\item 0 = \textbf{blu scuro} (inizio stato di scasso); 
 				\item 1 = \textbf{verde} (lucchetto sbloccato);
-				\item 2 = \textbf{giallo} (attenzione, rischio di rompere il lucchetto);
+				\item 2 = \textbf{giallo} (attenzione, rischio di rompere il grimaldello);
 				\item 3 = \textbf{rosa} (attenzione, elevato pericolo di rottura);
 				\item 4 = \textbf{rosso} (rottura del lucchetto).
 			\end{itemize}
