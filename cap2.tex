@@ -15,7 +15,7 @@ Le performance utili a cui non si può rinunciare per la buona riuscita del prog
 
 Il \textbf{tempo} gioca un ruolo importante in questo progetto, quindi si devono evitare inutili ritardi nella rilevazione ed invio delle informazioni.
 
-Il gioco è giocabile online, quindi alcuni accorgimenti particolari devono proteggere il sistema e gli utenti che lo utilizzano.
+Il gioco è usufruibile anche online, quindi sono stati presi alcuni accorgimenti per proteggere il sistema e gli utenti che lo utilizzano.
 
 \clearpage
 \section{Casi d'uso}
@@ -67,7 +67,7 @@ Il sistema si suddivide in più parti:
 \subsection{Modellazione della parte fisica - lato client}
 Dal punto di vista fisico, si ha un Arduino UNO:
 \begin{itemize}
-	\item connesso ad una breadboard e a dei componenti hardware attraverso i sui pin digitali;
+	\item connesso ad una breadboard e a dei componenti hardware attraverso i pin digitali;
 	\item connesso ad un PC mediante la porta USB (da cui riceve l'alimentazione a 5v). 
 \end{itemize}
 Ogni componente della breadboard ha un proprio impiego e può essere distinto in \textbf{sensore} ed \textbf{attuatore} secondo la visione di \textit{sistema reattivo}.
@@ -127,7 +127,7 @@ A lato server si ha un Odroid C2 (prodotto da \href{http://www.hardkernel.com/ma
 	\item Gigabit Ethernet;
 	\item 4 x USB 2.0.
 \end{itemize}
-Il dispositivo è collegato in rete e funge da server per abilitare la modalità multiplayer di Jimmy Challenge dalla parte client tramite uno script Python in esecuzione sul dispositivo collegato all'Arduino.
+Il dispositivo è collegato in rete e funge da server per abilitare la modalità multiplayer di Jimmy Challenge. Per poter far comunicare Arduino con il server è necessario eseguire uno script Python sul client con colegato Arduino.
 
 In un'ottica più orientata all'hardware, al server è collegato un LCD 16x2 che mostra alcune \textbf{statistiche sullo stato} attuale dei servizi e delle risorse. Lo schema \ref{img:server} presenta il monitor LCD collegato ai pin GPIO del Odroid con un potenziometro per l'aggiustamento del contrasto.
 
